@@ -10,8 +10,7 @@ var loginInfo = new Object(); //objects in JavaScript are more like dictionaries
 var questions = [ //list of questions to ask
     "host (default localhost): ",
     "user (default root): ",
-    "password: ",
-    "database name: "
+    "password: "
 ];
 var answers = [];
 
@@ -20,12 +19,12 @@ getInput = (callback) => {
         answers.push(ans);
         rl.setPrompt(questions[1]);
         rl.prompt();
-        rl.on('line', function(ans) {
-            if(answers.length < questions.length -1) {
+        rl.on('line', function (ans) {
+            if (answers.length < questions.length - 1) {
                 answers.push(ans.trim());
                 rl.setPrompt(questions[answers.length]);
                 rl.prompt();
-            } else if (answers.length = questions.length -1) {
+            } else if (answers.length = questions.length - 1) {
                 answers.push(ans.trim());
                 rl.close();
                 callback();
@@ -48,22 +47,35 @@ function connect() {
     loginInfo.user = answers[1];
     loginInfo.password = answers[2];
     loginInfo.database = answers[3];
-    var connection = mysql.createConnection(loginInfo);
+    connection = mysql.createConnection(loginInfo);
     connection.connect();
 
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
-        if(results[0].solution === 2) {
+        if (results[0].solution === 2) {
             console.log('Test query successful');
         }
         console.log("Connection state: " + connection.state);
         setup();
     });
 }
-
+var connection;
 initialize(connect);
 
 //run after initialize has completed
 function setup() {
-    
+    const fs = require('fs');
+    var queryString;
+    fs.readFile('DB Setup/setup.sql', (err, data) => {
+        if (err) throw err;
+        queryString = data.toString();
+        connection.query(queryString, function (error) {
+            if (error) throw error;
+            console.log("Database established");
+        })
+    });
+
+    // document.getElementById("testBtn").addEventListener("click", function () {
+    //     connection.query()
+    // });
 }

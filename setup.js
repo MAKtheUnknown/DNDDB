@@ -72,7 +72,7 @@ function setup() {
     var configFile = fs.readFileSync("config.json");
     var config = JSON.parse(configFile);
     if(config.newSQL == "true") {
-        fileString = 'DB Setup/setup2.sql';
+        fileString = 'DB Setup/setup_new.sql';
     }
     fs.readFile(fileString, (err, data) => {
         if (err) throw err;

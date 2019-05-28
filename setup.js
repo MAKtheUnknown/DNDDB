@@ -62,11 +62,19 @@ function connect() {
 var connection;
 initialize(connect);
 
+
+
 //run after initialize has completed
 function setup() {
     const fs = require('fs');
     var queryString;
-    fs.readFile('DB Setup/setup.sql', (err, data) => {
+    var fileString = 'DB Setup/setup.sql';
+    var configFile = fs.readFileSync("config.json");
+    var config = JSON.parse(configFile);
+    if(config.newSQL == "true") {
+        fileString = 'DB Setup/setup2.sql';
+    }
+    fs.readFile(fileString, (err, data) => {
         if (err) throw err;
         queryString = data.toString();
         connection.query(queryString, function (error) {
@@ -74,8 +82,4 @@ function setup() {
             console.log("Database established");
         });
     });
-
-    // document.getElementById("testBtn").addEventListener("click", function () {
-    //     connection.query()
-    // });
 }

@@ -34,7 +34,7 @@ getInput = (callback) => {
     });
 }
 
-function main(callback = null) {
+function initialize(callback = null) {
 
     getInput(() => {
         if (callback != null) {
@@ -57,8 +57,13 @@ function connect() {
             console.log('Test query successful');
         }
         console.log("Connection state: " + connection.state);
+        setup();
     });
-    connection.end();
 }
 
-main(connect);
+initialize(connect);
+
+//run after initialize has completed
+function setup() {
+    
+}

@@ -16,6 +16,7 @@ var bad_db_flag = false; //flagged to true if database does not exist
 
 /* Functions */
 function initialize(callback = null) { //initial config setup
+    createConfigIfNoConfig();
     configFile = fs.readFileSync("config.json");
     config = JSON.parse(configFile);
     loginInfo.host = config.host;
@@ -25,6 +26,10 @@ function initialize(callback = null) { //initial config setup
     if(callback != null) {
         callback();
     }
+}
+
+function createConfigIfNoConfig() {
+    //TODO
 }
 
 function connect() { //connects to server

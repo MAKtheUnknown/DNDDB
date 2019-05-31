@@ -1,1 +1,0 @@
-INSERT INTO attack VALUES(28, "Bite", "Literally just biting", 1);

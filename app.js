@@ -12,10 +12,10 @@ var loginInfo = new Object(); //Creates an empty object for login info (note: ob
 var configFile; //file read in by fs
 var config; //object representation of config
 var connection; //the connection to the MySQL server
-var bad_db_flag = false;
+var bad_db_flag = false; //flagged to true if database does not exist
 
 /* Functions */
-function initialize(callback = null) {
+function initialize(callback = null) { //initial config setup
     configFile = fs.readFileSync("config.json");
     config = JSON.parse(configFile);
     loginInfo.host = config.host;
@@ -27,7 +27,7 @@ function initialize(callback = null) {
     }
 }
 
-function connect() {
+function connect() { //connects to server
     //Moves loginInfo from config into loginInfo object
     console.log(loginInfo);
     connection = mysql.createConnection(loginInfo);
@@ -37,10 +37,9 @@ function connect() {
     testQuery();
 }
 
-function testQuery() {
+function testQuery() { //validates database setup
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) {
-            console.log(error.message.substring(0,15));
             if(error.message.substring(0,15) == "ER_BAD_DB_ERROR") {
                 bad_db_flag = true;
                 setup();

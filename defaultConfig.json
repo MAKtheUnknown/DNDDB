@@ -1,3 +1,7 @@
 {
-    "newSQL" : "false"
+    "newSQL" : "false",
+    "host" : "localhost",
+    "user" : "root",
+    "password" : "",
+    "database" : "dnd"
 }

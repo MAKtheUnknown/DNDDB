@@ -1,11 +1,7 @@
 /*  SETUP */
 var mysql = require('mysql'); //imports mysql node module
-const readline = require('readline'); //imports readline node module
 const fs = require('fs');
-const rl = readline.createInterface({ //defines interface for readline functions (don't think about it too much)
-    input: process.stdin,
-    output: process.stdout
-});
+
 
 /* Forward Declaration */
 var loginInfo = new Object(); //Creates an empty object for login info (note: objects in JavaScript are more like dictionaries)
@@ -36,7 +32,6 @@ function createConfigIfNoConfig(callback = null) {
         if (err) {
             console.log("Config file not detected - generating default config file. If your MySQL is not set up in the default way, you will likely soon be getting an access denied error :)");
             var defaultConfig = {
-                newSQL: "false",
                 host: "localhost",
                 user: "root",
                 password: "",
@@ -58,7 +53,6 @@ function connect() { //connects to server
     connection = mysql.createConnection(loginInfo);
     connection.connect();
     console.log("Connected")
-    console.log("In try block");
     testQuery();
 }
 
@@ -76,6 +70,7 @@ function testQuery() { //validates database setup
             if (results[0].solution === 2) {
                 console.log('Test query successful');
                 console.log("Connection state: " + connection.state);
+                fillDB();
             }
         }
     });
@@ -93,5 +88,20 @@ function setup() { //to be run if the database does not exist
         });
     });
 }
-//Main
+
+function fillDB() { //populates database with data
+    var input = fs.createReadStream('DB Setup/setup_new.sql');
+    var rl = require('readline').createInterface({
+        input: input,
+        terminal: false
+    });
+    rl.on('line', function (line) {
+        connection.query(line);
+    })
+    rl.on('close', function(){
+        console.log("Database successfully populated.")
+    })
+}
+
+/* Main */
 initialize(connect);

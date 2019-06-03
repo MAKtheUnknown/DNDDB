@@ -96,13 +96,16 @@ body {
 }
 
 .card {
+  display: table-cell;
   position: absolute;
   z-index: 9;
   background-color: #f1f1f1;
   text-align: left;
   border: 1px solid #d3d3d3;
   background-image: url("./images/paper.jpg");
+  color:#4d1919;
   width:100%;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .grip {
@@ -113,12 +116,20 @@ body {
   background-image: url("./images/paper.jpg");
   border: 2px solid #111111;
   text-align: left;
-
 }
 
 .x {
   float:right;
   z-index:10;
+
+}
+
+.singlestat {
+  float:left;
+  text-align: center;
+  line-height: 20px;
+  padding: 0;
+  margin:0;
 }
 
 input[type="number"] {
@@ -131,6 +142,7 @@ input[type="text"] {
    cursor: auto;
    background-color: rgba(0, 0, 0, 0.01)
 }
+
 
 </style>
 
@@ -182,15 +194,20 @@ function addCreatureCard(cardid)
 		con: 10,
 		int: 10,
 		wis: 10,
-		cha: 10
+		cha: 10,
 	}
 
 	cardmarkup = `
-	  <div id="${newcard.id}header" class="grip"><input id=${cardid}name type="text" value=${creature.name}>  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
-	  <p>AC: <input id=${cardid}ac type="number" size="1" value=${creature.ac} size="10"></p>
+	  <div id="${newcard.id}header" class="grip"><input id=${cardid}name style="font-size:25px" type="text" size="10" value=${creature.name}>  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+	  <p>AC: <input id=${cardid}ac type="number" size="1" value=${creature.ac}></p>
 	  <p>HP: <input id=${cardid}hp type="number" value=${creature.hp}></p>
 	  <p>Speed: <input id=${cardid}speed type="number" value=${creature.speed}></p>
-	  <p>Str: ${creature.str} Dex: ${creature.dex} Con: ${creature.con} Int: ${creature.int} Wis: ${creature.wis} Cha: ${creature.cha}</p>
+	  <div class="singlestat">Str<p><input id=${cardid}str type="number" value=${creature.str}></p></div>
+	  <div class="singlestat">Dex<p><input id=${cardid}dex type="number" value=${creature.dex}></p></div>
+	  <div class="singlestat">Con<p><input id=${cardid}con type="number" value=${creature.con}></p></div>
+	  <div class="singlestat">Int<p><input id=${cardid}int type="number" value=${creature.int}></p></div>
+	  <div class="singlestat">Wis<p><input id=${cardid}wis type="number" value=${creature.wis}></p></div>
+	  <div class="singlestat">Cha<p><input id=${cardid}cha type="number" value=${creature.cha}></p></div>
 	`;
 	newcard.innerHTML = cardmarkup;
 

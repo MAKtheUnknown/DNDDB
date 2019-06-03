@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 body {
@@ -109,24 +110,38 @@ body {
   text-align: left;
   border: 1px solid #d3d3d3;
   background-image: url("./images/paper.jpg");
+  width:100%;
 }
 
 .grip {
-  padding: 10px;
+  padding: 5px;
   cursor: move;
   z-index: 0;
   background-color: #2196F3;
   background-image: url("./images/paper.jpg");
-  border: 4px solid #111111;
+  border: 2px solid #111111;
   text-align: left;
 
 }
 
+.x {
+  float:right;
+  z-index:10;
+}
+
 input[type="number"] {
    width:50px;
+   cursor: auto;
+   background-color: rgba(0, 0, 0, 0.01)
+}
+
+input[type="text"] {
+   cursor: auto;
+   background-color: rgba(0, 0, 0, 0.01)
 }
 
 </style>
+
 </head>
 <body>
 
@@ -167,6 +182,7 @@ function addCreatureCard(cardid)
 
 	creature = 
 	{
+		name:"Skeleton",
 		ac:10,
 		hp:12,
 		speed:30,
@@ -179,11 +195,11 @@ function addCreatureCard(cardid)
 	}
 
 	cardmarkup = `
-	  <div id="${newcard.id}header" class="grip"><b>Skeleton</b> </div>
+	  <div id="${newcard.id}header" class="grip"><input id=${cardid}name type="text" value=${creature.name}>  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
 	  <p>AC: <input id=${cardid}ac type="number" size="1" value=${creature.ac} size="10"></p>
 	  <p>HP: <input id=${cardid}hp type="number" value=${creature.hp}></p>
 	  <p>Speed: <input id=${cardid}speed type="number" value=${creature.speed}></p>
-	  <p>Str: ${creature.str} Dex: ${creature.dex} Con${creature.con}</p>
+	  <p>Str: ${creature.str} Dex: ${creature.dex} Con: ${creature.con} Int: ${creature.int} Wis: ${creature.wis} Cha: ${creature.cha}</p>
 	`;
 	newcard.innerHTML = cardmarkup;
 
@@ -191,23 +207,13 @@ function addCreatureCard(cardid)
 	desktop.appendChild(newcard);
 }
 
+function closeCard(id)
+{
+	var desktop = document.getElementById("desktop");
+	desktop.removeChild(document.getElementById(id));
+}
+
 </script>
-
-
-<script>
-
-/*
-var newcard = document.createElement('div');
-newcard.id = "123";
-newcard.className="card";
-newcard.innerHTML = " <div id=\"cardgrip\">CardDisplay</div>\
-<h2>Monster</h2>\
-<p>AC <span id=ac></span></p>\
-<p>HP hp out of max_hp</p>\
-<script>var ac=18; document.getElementById(\"ac\").innerHTML = ac;\</script\> ";
-*/
-</script>
-
 
 
 
@@ -249,7 +255,6 @@ function dragElement(elmnt) {
 
   function dragMouseDown(e) {
     e = e || window.event;
-    e.preventDefault();
     // get the mouse cursor position at startup:
     pos3 = e.clientX;
     pos4 = e.clientY;

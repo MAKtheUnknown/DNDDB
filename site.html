@@ -6,10 +6,11 @@
 <style>
 body {
   font-family: "Lato", sans-serif;
-  background-color: #555;
-  background-image: url("dragon.jpg");
+  background-image: url("./images/dragon.jpg");
   background-repeat: no-repeat;
-  background-position: 100% 0%;
+  background-size: cover;
+  background-attachment: fixed;
+  position: fixed;
 }
 
 /* Fixed sidenav, full height */
@@ -18,12 +19,30 @@ body {
   width: 200px;
   position: fixed;
   z-index: 1;
+  top: 10%;
+  left: 0;
+  overflow-x: hidden;
+  padding-top: 0px; /* space between top side nave */
+  background-image: url("./images/dragon.jpg");
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Fixed sidenav, full height */
+.logo {
+  height:100px;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
-  background-image: url("dragon.jpg");
+  background-image: url("./images/logo.jpg");
   background-position: 0% 0%;
   background-repeat: no-repeat;
+  background-size: contain;
   overflow-x: hidden;
   padding-top: 50px; /* space between top side nave */
 }
@@ -41,6 +60,7 @@ body {
   text-align: left;
   cursor: pointer;
   outline: none;
+
 }
 
 /* On mouse-over */
@@ -53,6 +73,7 @@ body {
   margin-left: 200px; /* Same as the width of the sidenav */
   font-size: 20px; /* Increased text to enable scrolling */
   padding: 0px 30px;  /* left gives height and right value further shifts more pad */
+  color:green;
 }
 
 /* Add an active class to the active dropdown button */
@@ -87,8 +108,7 @@ body {
   background-color: #f1f1f1;
   text-align: left;
   border: 1px solid #d3d3d3;
-  background-image: url("1.jpg");
-
+  background-image: url("./images/paper.jpg");
 }
 
 .grip {
@@ -96,7 +116,7 @@ body {
   cursor: move;
   z-index: 0;
   background-color: #2196F3;
-  background-image: url("1.jpg");
+  background-image: url("./images/paper.jpg");
   border: 4px solid #111111;
   text-align: left;
 
@@ -110,62 +130,23 @@ input[type="number"] {
 </head>
 <body>
 
-
-
+<div class="logo"> </div>
 <div class="sidenav">
   <button class="dropdown-btn">Items 
   <i class="fa fa-caret-down"></i>
   </button>
-
-
-  <button class="dropdown-btn">Creatures 
-    <i class="fa fa-caret-down"></i>
-  </button>
-
   <div class="dropdown-container">
-    <button class="dropdown-btn">Skeleton 
-    <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <div class="dropdown-container">
-    <button class="dropdown-btn">Zombie 
+    <button class="dropdown-btn">sword 
     <i class="fa fa-caret-down"></i>
     </button>
   </div>
 
 
-  <button class="dropdown-btn">Location 
-    <i class="fa fa-caret-down"></i>
-  </button>
-  <div class="dropdown-container">
-      <button class="dropdown-btn">DarkForest 
-      <i class="fa fa-caret-down"></i>
-      </button>
-        <div class="dropdown-container">
-          <button class="dropdown-btn">Creatures 
-          
 
-          </button>
-          <div class="dropdown-container">
-          <button class="dropdown-btn">Skele 
-          <i class="fa fa-caret-down"></i>
-
-                    <button class="dropdown-btn">Zombie 
-          <i class="fa fa-caret-down"></i>
-          </button>
-
-          </div>
-
-
-        </div>
-
-      <button class="dropdown-btn">Ocean 
-      <i class="fa fa-caret-down"></i>
-      </button>
-  </div>
 
 </div>
+
+
 
 <div id="desktop" class="main">
   <h2>DND</h2>
@@ -212,7 +193,6 @@ function addCreatureCard(cardid)
 
 </script>
 
-</div>
 
 <script>
 
@@ -230,8 +210,9 @@ newcard.innerHTML = " <div id=\"cardgrip\">CardDisplay</div>\
 
 
 
-<script>
 
+
+<script>
 
 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
 var dropdown = document.getElementsByClassName("dropdown-btn");

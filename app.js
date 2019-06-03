@@ -1,81 +1,97 @@
-var mysql = require('mysql');
-const readline = require('readline');
-const rl = readline.createInterface({
+/*  SETUP */
+var mysql = require('mysql'); //imports mysql node module
+const readline = require('readline'); //imports readline node module
+const fs = require('fs');
+const rl = readline.createInterface({ //defines interface for readline functions (don't think about it too much)
     input: process.stdin,
     output: process.stdout
 });
 
-var loginInfo = new Object(); //objects in JavaScript are more like dictionaries
+/* Forward Declaration */
+var loginInfo = new Object(); //Creates an empty object for login info (note: objects in JavaScript are more like dictionaries)
+var configFile; //file read in by fs
+var config; //object representation of config
+var connection; //the connection to the MySQL server
+var bad_db_flag = false; //flagged to true if database does not exist
 
-var questions = [ //list of questions to ask
-    "host (default localhost): ",
-    "user (default root): ",
-    "password: "
-];
-var answers = [];
-
-getInput = (callback) => {
-    rl.question(questions[0], function (ans) {
-        answers.push(ans);
-        rl.setPrompt(questions[1]);
-        rl.prompt();
-        rl.on('line', function (ans) {
-            if (answers.length < questions.length - 1) {
-                answers.push(ans.trim());
-                rl.setPrompt(questions[answers.length]);
-                rl.prompt();
-            } else if (answers.length = questions.length - 1) {
-                answers.push(ans.trim());
-                rl.close();
-                callback();
-            }
-        });
+/* Functions */
+function initialize(callback = null) { //initial config setup
+    createConfigIfNoConfig(function () {
+        configFile = fs.readFileSync("config.json");
+        config = JSON.parse(configFile);
+        loginInfo.host = config.host;
+        loginInfo.user = config.user;
+        loginInfo.password = config.password;
+        loginInfo.database = config.database;
+        if (callback != null) {
+            callback();
+        }
     });
+
 }
 
-function initialize(callback = null) {
-
-    getInput(() => {
-        if (callback != null) {
+function createConfigIfNoConfig(callback = null) {
+    file = "config.json";
+    fs.access(file, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.log("Config file not detected - generating default config file. If your MySQL is not set up in the default way, you will likely soon be getting an access denied error :)");
+            var defaultConfig = {
+                newSQL: "false",
+                host: "localhost",
+                user: "root",
+                password: "",
+                database: "dnd"
+            }
+            var configString = JSON.stringify(defaultConfig);
+            fs.writeFile("config.json", configString, function () {
+                callback();
+            });
+        } else {
             callback();
         }
     });
 }
 
-function connect() {
-    loginInfo.host = answers[0];
-    loginInfo.user = answers[1];
-    loginInfo.password = answers[2];
-    loginInfo.database = answers[3];
+function connect() { //connects to server
+    //Moves loginInfo from config into loginInfo object
+    console.log(loginInfo);
     connection = mysql.createConnection(loginInfo);
     connection.connect();
+    console.log("Connected")
+    console.log("In try block");
+    testQuery();
+}
 
+function testQuery() { //validates database setup
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-        if (error) throw error;
-        if (results[0].solution === 2) {
-            console.log('Test query successful');
+        if (error) {
+            if (error.message.substring(0, 15) == "ER_BAD_DB_ERROR") {
+                bad_db_flag = true;
+                setup();
+            } else {
+                throw error;
+            }
         }
-        console.log("Connection state: " + connection.state);
-        setup();
+        if (!bad_db_flag) {
+            if (results[0].solution === 2) {
+                console.log('Test query successful');
+                console.log("Connection state: " + connection.state);
+            }
+        }
     });
 }
-var connection;
+
+function setup() { //to be run if the database does not exist
+    var dbName = loginInfo.database;
+    delete loginInfo.database;
+    connection = mysql.createConnection(loginInfo);
+    connection.query(`CREATE DATABASE ${dbName}`, function () {
+        connection.query(`USE DATABASE ${dbName}`, function () {
+            loginInfo.database = dbName;
+            bad_db_flag = false;
+            testQuery();
+        });
+    });
+}
+//Main
 initialize(connect);
-
-//run after initialize has completed
-function setup() {
-    const fs = require('fs');
-    var queryString;
-    fs.readFile('DB Setup/setup.sql', (err, data) => {
-        if (err) throw err;
-        queryString = data.toString();
-        connection.query(queryString, function (error) {
-            if (error) throw error;
-            console.log("Database established");
-        })
-    });
-
-    // document.getElementById("testBtn").addEventListener("click", function () {
-    //     connection.query()
-    // });
-}

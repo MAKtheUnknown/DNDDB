@@ -1,7 +1,27 @@
 /*  SETUP */
 var mysql = require('mysql'); //imports mysql node module
 const fs = require('fs');
+const http = require('http');
 
+var server = http.createServer(function(req,res){
+    console.log("Request was made: " + req.url);
+    if(req.url == "/site.html") {
+        console.log("Site request");
+        res.writeHead(200, {"Content-Type": 'text/html'});
+        var myReadStream = fs.createReadStream('site.html', 'utf8');
+        myReadStream.pipe(res);
+    } else {
+        console.log("Non-site request");
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        var myObj = {
+            data: 'testName',
+        }
+        res.end(JSON.stringify(myObj));
+    }
+});
+
+server.listen(3000, 'localhost');
+console.log("Server listening on port 3000");
 
 /* Forward Declaration */
 var loginInfo = new Object(); //Creates an empty object for login info (note: objects in JavaScript are more like dictionaries)
@@ -49,7 +69,6 @@ function createConfigIfNoConfig(callback = null) {
 
 function connect() { //connects to server
     //Moves loginInfo from config into loginInfo object
-    console.log(loginInfo);
     connection = mysql.createConnection(loginInfo);
     connection.connect();
     console.log("Connected")
@@ -98,7 +117,7 @@ function fillDB() { //populates database with data
     rl.on('line', function (line) {
         connection.query(line);
     })
-    rl.on('close', function(){
+    rl.on('close', function () {
         console.log("Database successfully populated.")
     })
 }

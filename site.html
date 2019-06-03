@@ -81,27 +81,30 @@ body {
   .sidenav a {font-size: 18px;}
 }
 
-#mydiv {
+.card {
   position: absolute;
   z-index: 9;
   background-color: #f1f1f1;
-  text-align: center;
+  text-align: left;
   border: 1px solid #d3d3d3;
   background-image: url("1.jpg");
 
 }
 
-#mydivheader {
+.grip {
   padding: 10px;
   cursor: move;
   z-index: 0;
   background-color: #2196F3;
   background-image: url("1.jpg");
   border: 4px solid #111111;
+  text-align: left;
 
 }
 
-
+input[type="number"] {
+   width:50px;
+}
 
 </style>
 </head>
@@ -164,18 +167,66 @@ body {
 
 </div>
 
-<div class="main">
+<div id="desktop" class="main">
   <h2>DND</h2>
   <p>Some random text..</p>
 
-<div id="mydiv">
-  <div id="mydivheader">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<b>Skeleton</b> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</div>
-  <p>Hitpoints: 80</p>
-  <p>Speed: 30</p>
-  <p>Str: 2</p>
-</div>
+<script>
+
+addCreatureCard('1');
+addCreatureCard('2');
+addCreatureCard('3');
+
+function addCreatureCard(cardid)
+{
+
+	var newcard = document.createElement('div');
+	newcard.id = "creaturecard" + cardid;
+	newcard.className="card";
+
+	creature = 
+	{
+		ac:10,
+		hp:12,
+		speed:30,
+		str: 10,
+		dex: 10,
+		con: 10,
+		int: 10,
+		wis: 10,
+		cha: 10
+	}
+
+	cardmarkup = `
+	  <div id="${newcard.id}header" class="grip"><b>Skeleton</b> </div>
+	  <p>AC: <input id=${cardid}ac type="number" size="1" value=${creature.ac} size="10"></p>
+	  <p>HP: <input id=${cardid}hp type="number" value=${creature.hp}></p>
+	  <p>Speed: <input id=${cardid}speed type="number" value=${creature.speed}></p>
+	  <p>Str: ${creature.str} Dex: ${creature.dex} Con${creature.con}</p>
+	`;
+	newcard.innerHTML = cardmarkup;
+
+	var desktop = document.getElementById("desktop");
+	desktop.appendChild(newcard);
+}
+
+</script>
 
 </div>
+
+<script>
+
+/*
+var newcard = document.createElement('div');
+newcard.id = "123";
+newcard.className="card";
+newcard.innerHTML = " <div id=\"cardgrip\">CardDisplay</div>\
+<h2>Monster</h2>\
+<p>AC <span id=ac></span></p>\
+<p>HP hp out of max_hp</p>\
+<script>var ac=18; document.getElementById(\"ac\").innerHTML = ac;\</script\> ";
+*/
+</script>
 
 
 
@@ -197,10 +248,13 @@ for (i = 0; i < dropdown.length; i++) {
   });
 }
 
-
-
 //Make the DIV element draggagle:
-dragElement(document.getElementById("mydiv"));
+
+var deck = document.getElementsByClassName("card");
+for (i in deck)
+{
+	dragElement(deck[i]);
+}
 
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -244,6 +298,7 @@ function dragElement(elmnt) {
 }
 
 </script>
+
 
 </body>
 </html> 

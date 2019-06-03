@@ -16,20 +16,40 @@ var bad_db_flag = false; //flagged to true if database does not exist
 
 /* Functions */
 function initialize(callback = null) { //initial config setup
-    createConfigIfNoConfig();
-    configFile = fs.readFileSync("config.json");
-    config = JSON.parse(configFile);
-    loginInfo.host = config.host;
-    loginInfo.user = config.user;
-    loginInfo.password = config.password;
-    loginInfo.database = config.database;
-    if(callback != null) {
-        callback();
-    }
+    createConfigIfNoConfig(function () {
+        configFile = fs.readFileSync("config.json");
+        config = JSON.parse(configFile);
+        loginInfo.host = config.host;
+        loginInfo.user = config.user;
+        loginInfo.password = config.password;
+        loginInfo.database = config.database;
+        if (callback != null) {
+            callback();
+        }
+    });
+
 }
 
-function createConfigIfNoConfig() {
-    //TODO
+function createConfigIfNoConfig(callback = null) {
+    file = "config.json";
+    fs.access(file, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.log("Config file not detected - generating default config file. If your MySQL is not set up in the default way, you will likely soon be getting an access denied error :)");
+            var defaultConfig = {
+                newSQL: "false",
+                host: "localhost",
+                user: "root",
+                password: "",
+                database: "dnd"
+            }
+            var configString = JSON.stringify(defaultConfig);
+            fs.writeFile("config.json", configString, function () {
+                callback();
+            });
+        } else {
+            callback();
+        }
+    });
 }
 
 function connect() { //connects to server
@@ -45,14 +65,14 @@ function connect() { //connects to server
 function testQuery() { //validates database setup
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) {
-            if(error.message.substring(0,15) == "ER_BAD_DB_ERROR") {
+            if (error.message.substring(0, 15) == "ER_BAD_DB_ERROR") {
                 bad_db_flag = true;
                 setup();
             } else {
                 throw error;
             }
         }
-        if(!bad_db_flag) {
+        if (!bad_db_flag) {
             if (results[0].solution === 2) {
                 console.log('Test query successful');
                 console.log("Connection state: " + connection.state);
@@ -65,14 +85,13 @@ function setup() { //to be run if the database does not exist
     var dbName = loginInfo.database;
     delete loginInfo.database;
     connection = mysql.createConnection(loginInfo);
-    connection.query(`CREATE DATABASE ${dbName}`, function() {
-        connection.query(`USE DATABASE ${dbName}`, function(){
+    connection.query(`CREATE DATABASE ${dbName}`, function () {
+        connection.query(`USE DATABASE ${dbName}`, function () {
             loginInfo.database = dbName;
             bad_db_flag = false;
             testQuery();
         });
     });
 }
-
 //Main
 initialize(connect);

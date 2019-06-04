@@ -53,7 +53,7 @@ body {
   padding-top: 50px; /* space between top side nave */
 }
 /* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn, .add-creature-btn {
+.sidenav a, .dropdown-btn, .add-creature-btn, .creature-btn {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
@@ -72,7 +72,7 @@ body {
   background-attachment: fixed;
 }
 /* On mouse-over */
-.sidenav a:hover, .dropdown-btn:hover, .add-creature-btn:hover {
+.sidenav a:hover, .dropdown-btn:hover, .add-creature-btn:hover, .creature-btn:hover {
   color: #f1f1f1; /* color of whole box when hovering over it */
 }
 /* Main content */
@@ -310,7 +310,7 @@ function Add_Location(Location)
 <!-- for adding creatures-->
 <script> 
   function addCreature(element) {
-    $(element).appendChild()
+    newCreatureCard(element);
   }
 </script>
 <script>
@@ -350,10 +350,13 @@ function autoUpdateDB(e)
   queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "`" +`${newValue}` + "`" +` WHERE id${table} = ${id}`);
 }
 
-function newCreatureCard()
+function newCreatureCard(type="Creature",element = null)
 {
-  var newID = JSON.parse(queryDB('SELECT max(idCreature) from Creature'))[0]["max(idCreature)"] + 1;
-  queryDB(`INSERT INTO Creature (idCreature, creature_name) VALUES (${newID}, 'New Creature')`);
+  var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${Creature})`] + 1;
+  queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New Creature')`);
+  if(element != null) {
+    $(element).prepend(`<button id="${newid}" class="creature-btn"></button>`)
+  }
   addCreatureCard(newID);
 }
 

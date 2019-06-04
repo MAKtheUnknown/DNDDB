@@ -226,37 +226,48 @@ addCreatureCard('1');
 addCreatureCard('2');
 addCreatureCard('3');
 
+$("input").change(function(e){
+
+  var changedCardId = $(e.target).closest(".card")[0].id;
+  var ccidComponents = changedCardId.split('_');
+  var type = ccidComponents[0];
+  var id = ccidComponents[1];
+
+  var newValue = e.target.value;
+
+  var table = '';
+
+  if(type == "creature")
+  {
+    table = "Creature";
+  }  
+
+  column = e.target.id;
+
+  queryDB('UPDATE ' + table + ' SET ' + table + '.' + column + '=' + newValue + ' WHERE id'+table + '=' + id);
+});
+
 function addCreatureCard(cardid)
 {
+
+  var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature='+cardid+';'))[0];
+  console.log(creature);
+
   var newcard = document.createElement('div');
-  newcard.id = "creaturecard" + cardid;
+  newcard.id = "creature_" + cardid;
   newcard.className="card";
 
-  creature = 
-  {
-    name:"Skeleton",
-    ac:10,
-    hp:12,
-    speed:30,
-    str: 10,
-    dex: 10,
-    con: 10,
-    int: 10,
-    wis: 10,
-    cha: 10,
-  }
-
   cardmarkup = `
-    <div id="${newcard.id}header" class="grip"><input id=${cardid}name style="font-size:25px" type="text" size="10" value=${creature.name}>  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
-    <p>AC: <input id=${cardid}ac type="number" size="1" value=${creature.ac}></p>
-    <p>HP: <input id=${cardid}hp type="number" value=${creature.hp}></p>
-    <p>Speed: <input id=${cardid}speed type="number" value=${creature.speed}></p>
-    <div class="singlestat">Str<p><input id=${cardid}str type="number" value=${creature.str}></p></div>
-    <div class="singlestat">Dex<p><input id=${cardid}dex type="number" value=${creature.dex}></p></div>
-    <div class="singlestat">Con<p><input id=${cardid}con type="number" value=${creature.con}></p></div>
-    <div class="singlestat">Int<p><input id=${cardid}int type="number" value=${creature.int}></p></div>
-    <div class="singlestat">Wis<p><input id=${cardid}wis type="number" value=${creature.wis}></p></div>
-    <div class="singlestat">Cha<p><input id=${cardid}cha type="number" value=${creature.cha}></p></div>
+    <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
+    <p>HP: <input id=hp type="number" value=${creature.hp}></p>
+    <p>Speed: <input id=speed type="number" value=${creature.speed}></p>
+    <div class="singlestat">Str<p><input id=str type="number" value=${creature.str}></p></div>
+    <div class="singlestat">Dex<p><input id=dex type="number" value=${creature.dex}></p></div>
+    <div class="singlestat">Con<p><input id=con type="number" value=${creature.con}></p></div>
+    <div class="singlestat">Int<p><input id=int type="number" value=${creature.int}></p></div>
+    <div class="singlestat">Wis<p><input id=wis type="number" value=${creature.wis}></p></div>
+    <div class="singlestat">Cha<p><input id=cha type="number" value=${creature.cha}></p></div>
   `;
         newcard.innerHTML = cardmarkup;
 

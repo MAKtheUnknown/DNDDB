@@ -23,8 +23,9 @@ var server = http.createServer(function(req,res){
         connection.query(requestString, function(error, results) {
             if(error) throw error;
             var returnString = results[0].solution;
+            console.log("Result: ", results);
             res.writeHead(200, {"Content-Type": 'text/plain'});
-            res.end(returnString);
+            res.end(JSON.stringify(results));
         });
 
     } else if(req.url == "/site.html") {

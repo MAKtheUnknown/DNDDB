@@ -3,19 +3,10 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", "http://localhost:3000",true);
-    xmlHttp.send(null);
-    console.log(xmlHttp.responseText.replace((/%20/g,,' '));
-
-    function voidQuery() {
-
-    }
-
-    function returnQuery(query) {
+    function queryDB(query) {
       xmlHttp.open("GET", `http://localhost:3000/${query}`,false);      
       xmlHttp.send(null);
-      console.log(xmlHttp.responseText.replace((/%20/g,' '));
+      return xmlHttp.responseText.replace(/%20/g,' ');
     }
   </script>
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">

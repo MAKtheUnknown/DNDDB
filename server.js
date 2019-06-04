@@ -4,19 +4,38 @@ const fs = require('fs');
 const http = require('http');
 
 var server = http.createServer(function(req,res){
-    console.log("Request was made: " + req.url);
-    if(req.url == "/site.html") {
+    requestString = req.url.replace(/%20/g,' ').slice(1);
+    console.log("requestString: ", requestString);
+    console.log("Request was made: " + req.url.replace('%20',' ').slice(1) +", "+ req.method);
+    if(requestString.toLowerCase().startsWith("update")) { //update an entity
+        connection.query(requestString, function (error) {
+            if(error) throw error;
+            res.writeHead(200, {"Content-Type": 'text/plain'});
+            res.end();
+        });
+    } else if(requestString.toLowerCase().startsWith("insert")) { //add a new entity
+        connection.query(requestString, function (error) {
+            if(error) throw error;
+            res.writeHead(200, {"Content-Type": 'text/plain'});
+            res.end();
+        });
+    } else if(requestString.toLowerCase().startsWith("select")) { //display data
+        connection.query(requestString, function(error, results) {
+            if(error) throw error;
+            var returnString = results[0].solution;
+            res.writeHead(200, {"Content-Type": 'text/plain'});
+            res.end(returnString);
+        });
+
+    } else if(req.url == "/site.html") {
         console.log("Site request");
         res.writeHead(200, {"Content-Type": 'text/html'});
         var myReadStream = fs.createReadStream('site.html', 'utf8');
         myReadStream.pipe(res);
     } else {
-        console.log("Non-site request");
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        var myObj = {
-            data: 'testName',
-        }
-        res.end(JSON.stringify(myObj));
+        console.log("Bad query");
+        res.writeHead(200, {"Content-Type": 'text/plain'});
+        res.end();
     }
 });
 

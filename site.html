@@ -159,10 +159,6 @@ body {
   width:50px;
 }
 
-button {
-   background-color: rgba(0, 0, 0, 0.01)
-}
-
 input[type="number"] {
    width:50px;
    cursor: auto;
@@ -344,7 +340,7 @@ function autoUpdateDB(e)
 
   column = e.target.id;
 
-  queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "`" +`${newValue}` + "`" +` WHERE id${table} = ${id}`);
+  queryDB(`UPDATE ${table} SET ${table}.${column} = '${newValue}' WHERE id${table} = ${id}`);
 }
 
 function newCreatureCard()
@@ -435,9 +431,6 @@ function addCreatureCard(cardid)
 		</div>
 		`;
 	}
-	attackTable.insertRow().innerHTML = `*<button>+</button>*/`;
-
-	
 
       }
 
@@ -449,9 +442,7 @@ function closeCard(id)
 
 function addAttackEntry(creatureID)
 {
-	var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
-  	queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, '?')`);
-  	
+	
 }
 
 </script>

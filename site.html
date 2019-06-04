@@ -230,14 +230,13 @@ function Add_Location(Location)
 
 addCreatureCard('1');
 addCreatureCard('2');
-addCreatureCard('3');
 
 $("input").change(function(e){autoUpdateDB(e)});
 $("textarea").change(function(e){autoUpdateDB(e)});
 
 function autoUpdateDB(e)
 {
-  var changedCardId = $(e.target).closest(".card")[0].id;
+  var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
   var ccidComponents = changedCardId.split('_');
   var type = ccidComponents[0];
   var id = ccidComponents[1];
@@ -250,10 +249,12 @@ function autoUpdateDB(e)
   {
     table = "Creature";
   }  
+  else if(type == "attack")
+  {
+    table = "Attack";
+  }  
 
   column = e.target.id;
-
-  console.log(newValue);
 
   queryDB(`UPDATE ${table} SET ${table}.${column} = '${newValue}' WHERE id${table} = ${id}`);
 }
@@ -261,7 +262,6 @@ function autoUpdateDB(e)
 function newCreatureCard()
 {
   var newID = JSON.parse(queryDB('SELECT max(idCreature) from Creature'))[0]["max(idCreature)"] + 1;
-  console.log(newID);
   queryDB(`INSERT INTO Creature (idCreature, creature_name) VALUES (${newID}, 'New Creature')`);
   addCreatureCard(newID);
 }
@@ -270,11 +270,9 @@ function addCreatureCard(cardid)
 {
 
   var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature='+cardid+';'))[0];
-  console.log(creature);
-
   var newcard = document.createElement('div');
   newcard.id = "creature_" + cardid;
-  newcard.className="card";
+  newcard.className="card entrycontainer";
 
   cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
@@ -289,17 +287,75 @@ function addCreatureCard(cardid)
     <div class="singlestat">Wis<p><input id=wis type="number" value=${creature.wis}></p></div>
     <div class="singlestat">Cha<p><input id=cha type="number" value=${creature.cha}></p></div>
     <p><textarea class=description id=creature_description type=text>${creature.creature_description}</textarea></p>
+    <div>
+	<table id=${cardid}_attacks style="font-size:10px">
+		<tr>
+			<th>Attack</th>
+			<th>Modifier</th>
+			<th>Damage</th>
+			<th>Description</th>
+		</tr>
+	</table>
+    </div>
   `;
         newcard.innerHTML = cardmarkup;
-
+	
         var desktop = document.getElementById("desktop");
         desktop.appendChild(newcard);
+
+	var attackQuery = queryDB(`SELECT * FROM CreatureAttack LEFT JOIN Attack ON Attack_idAttack=idAttack WHERE Creature_idCreature=${cardid};`);
+
+	var attacks = null;
+	console.log(attackQuery);
+	if(attackQuery != null)
+		attacks = JSON.parse(attackQuery);
+
+	var attackTable = document.getElementById(`${cardid}_attacks`);
+
+	for(i in attacks)
+	{
+		var newRow = attackTable.insertRow();
+		var attack = attacks[i];
+		newRow.className = 'entrycontainer';
+		newRow.id = 'attack_' + attack.idAttack;
+
+		var name = newRow.insertCell(0);
+		var modifier = newRow.insertCell(1);		
+		var damage = newRow.insertCell(2);
+		var description = newRow.insertCell(3);
+	
+		name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
+		modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`; 
+		description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
+
+		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
+		var damages = JSON.parse(damageQuery);
+
+		dmgList = ""
+		for (j in damages)
+		{
+			var d = damages[j];
+			dmgList = dmgList + `<p>${d.damage_roll} ${d.damage_type}</p>`
+		}
+
+		damage.innerHTML = `
+		<div>
+		${dmgList}
+		</div>
+		`;
+	}
+
       }
 
 function closeCard(id)
 {
   var desktop = document.getElementById("desktop");
   desktop.removeChild(document.getElementById(id));
+}
+
+function addAttackEntry(creatureID)
+{
+	
 }
 
 </script>

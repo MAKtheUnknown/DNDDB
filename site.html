@@ -193,9 +193,85 @@ input[type="text"] {
 
 
 <script>
-Add_Location('Fire');
-Add_Location('Ocean');
-Add_Location('Forest');
+add();
+function add()
+{
+  var all_loc_info = JSON.parse(queryDB('SELECT * FROM Location;'));
+  var all_crea_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
+  var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
+  var all_item_info = JSON.parse(queryDB('SELECT * FROM Item;'));
+  var Location_size = all_loc_info.length;
+  var Creatures_size = all_crea_info.length;
+  var Item_size = all_item_info.length;
+  var i;
+  var j;
+  var k;
+  for (i = 0; i < Location_size; i++) {
+    var new_location = document.createElement('dropdown-btn'); 
+    var loc_info = all_loc_info[i]
+    var loc_name = loc_info.location_name;
+    var idLocation = loc_info.idLocation;
+    new_location.id = idLocation;
+    tabmarkup = `
+    <button class="dropdown-btn">${loc_name}
+    <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <button class="dropdown-btn">Creatures
+      <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+      `;
+    for (j = 0; j < Creatures_size; j++) {
+      var crea_info = all_crea_info[j];
+      var crea_name = crea_info.creature_name;
+      var crea_id = crea_info.idCreature;
+      for (k = 0; k < Creatures_size; k++) {
+        var both_info = all_both_info[k];
+        var Location_idLocation = both_info.Location_idLocation;
+        var Creature_idCreature = both_info.Creature_idCreature;
+        if (crea_id == Creature_idCreature && Location_idLocation == idLocation ) {
+          tabmarkup = tabmarkup + 
+          `
+        <a href="#">${crea_name}</a>
+          `;
+          k = 100;
+        }
+      }
+    }
+    tabmarkup = tabmarkup +
+          ` 
+      </div>
+      <button class="dropdown-btn">Items
+      <i class="fa fa-caret-down"></i>
+      </button>
+        <div class="dropdown-container">
+        `;
+    for (j = 0; j < Item_size; j++) {
+      var item_info = all_item_info[j];
+      var item_name = item_info.item_name;
+      var item_id = item_info.idItem;
+      if (item_id == idLocation) {
+        tabmarkup = tabmarkup + 
+          `
+        <a href="#">${crea_name}</a>
+          `;
+          j = 100;
+        }
+      }
+      tabmarkup = tabmarkup + 
+      ` 
+      </div>
+    </div>
+  `;
+  new_location.innerHTML = tabmarkup;
+  var Locations = document.getElementById("Locations");
+  Locations.appendChild(new_location);
+  }
+
+}
+
+
 function Add_Location(Location)
 {
   var new_location = document.createElement('dropdown-btn'); 
@@ -278,6 +354,8 @@ function addCreatureCard(cardid)
 {
 
   var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature='+cardid+';'))[0];
+  console.log(555);
+  console.log(555);
   var newcard = document.createElement('div');
   newcard.id = "creature_" + cardid;
   newcard.className="card entrycontainer";

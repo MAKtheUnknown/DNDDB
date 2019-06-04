@@ -149,6 +149,12 @@ body {
   margin:0;
 }
 
+.description {
+  overflow:auto;
+  width:90%;
+  background-color: rgba(0, 0, 0, 0.01)
+}
+
 input[type="number"] {
    width:50px;
    cursor: auto;
@@ -225,10 +231,12 @@ function Add_Location(Location)
 addCreatureCard('1');
 addCreatureCard('2');
 addCreatureCard('3');
-newCreatureCard();
 
-$("input").change(function(e){
+$("input").change(function(e){autoUpdateDB(e)});
+$("textarea").change(function(e){autoUpdateDB(e)});
 
+function autoUpdateDB(e)
+{
   var changedCardId = $(e.target).closest(".card")[0].id;
   var ccidComponents = changedCardId.split('_');
   var type = ccidComponents[0];
@@ -248,7 +256,7 @@ $("input").change(function(e){
   console.log(newValue);
 
   queryDB(`UPDATE ${table} SET ${table}.${column} = '${newValue}' WHERE id${table} = ${id}`);
-});
+}
 
 function newCreatureCard()
 {
@@ -272,13 +280,15 @@ function addCreatureCard(cardid)
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
-    <p>Speed: <input id=speed type="number" value=${creature.speed}></p>
+    <p>Speed: <input id=speed type="number" value=${creature.speed}>
+	<span align=right>XP: <input id=xp type="number" value=${creature.xp}><span></p>
     <div class="singlestat">Str<p><input id=str type="number" value=${creature.str}></p></div>
     <div class="singlestat">Dex<p><input id=dex type="number" value=${creature.dex}></p></div>
     <div class="singlestat">Con<p><input id=con type="number" value=${creature.con}></p></div>
     <div class="singlestat">Int<p><input id=int type="number" value=${creature.int}></p></div>
     <div class="singlestat">Wis<p><input id=wis type="number" value=${creature.wis}></p></div>
     <div class="singlestat">Cha<p><input id=cha type="number" value=${creature.cha}></p></div>
+    <p><textarea class=description id=creature_description type=text>${creature.creature_description}</textarea></p>
   `;
         newcard.innerHTML = cardmarkup;
 

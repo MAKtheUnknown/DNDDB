@@ -53,7 +53,7 @@ body {
   padding-top: 50px; /* space between top side nave */
 }
 /* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn {
+.sidenav a, .dropdown-btn, .add-creature-btn {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
@@ -72,7 +72,7 @@ body {
   background-attachment: fixed;
 }
 /* On mouse-over */
-.sidenav a:hover, .dropdown-btn:hover {
+.sidenav a:hover, .dropdown-btn:hover, .add-creature-btn:hover {
   color: #f1f1f1; /* color of whole box when hovering over it */
 }
 /* Main content */
@@ -265,9 +265,16 @@ function add_dropdown()
   var Locations = document.getElementById("Locations");
   Locations.appendChild(new_location);
   }
+
 }
 </script>
 
+<!-- for adding creatures-->
+<script> 
+  function addCreature(element) {
+    $(element).appendChild()
+  }
+</script>
 <script>
 
 addCreatureCard('1');

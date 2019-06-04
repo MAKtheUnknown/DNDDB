@@ -51,7 +51,7 @@ body {
 }
 /* Style the sidenav links and the dropdown button */
 .sidenav a, .dropdown-btn {
-   padding: 10px 0px 10px 30px;  /* 1st = top, 2nd = Dont touch,3rd = bottom, 4th = left*/
+  padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
   color: #818181;
@@ -62,6 +62,11 @@ body {
   text-align: left;
   cursor: pointer;
   outline: none;
+
+  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 /* On mouse-over */
 .sidenav a:hover, .dropdown-btn:hover {
@@ -76,7 +81,7 @@ body {
 }
 /* Add an active class to the active dropdown button */
 .active {
-  background-color: green;  /* background when selected */
+  /*background-color: green;   background when selected */
   color: white;   /* text when selected */
 }
 
@@ -84,8 +89,11 @@ body {
 .dropdown-container {
   display: none;
   background-color: #262626; /* drop down color */
-  padding-left: 8px;    /* shift leters to right  */
-  position: absolute;
+  padding-left: 14px;    /* shift leters to right  */
+  background-image: url("./images/dragon.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 } 
 /* Optional: Style the caret down icon */
 .fa-caret-down {
@@ -156,33 +164,64 @@ input[type="text"] {
 
 <body>
 
-  <div class="logo"> </div>
-  <div class="sidenav">
-    <button class="dropdown-btn">Items
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-container">
-      <button class="dropdown-btn">sword
-        <i class="fa fa-caret-down"></i>
-      </button>
-    </div>
-
-
-
-
+<div class="logo"> </div>
+<div class="sidenav" id="sidenav">
+  <button id="Location-btn" class="dropdown-btn">Location 
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container" id="Locations">
   </div>
-
-
+</div>
 
   <div id="desktop" class="main">
     <h2>DND</h2>
     <p>Some random text..</p>
 
-    <script>
 
-      addCreatureCard('1');
-      addCreatureCard('2');
-      addCreatureCard('3');
+
+<script>
+Add_Location('Fire');
+Add_Location('Ocean');
+Add_Location('Forest');
+function Add_Location(Location)
+{
+  var new_location = document.createElement('dropdown-btn'); 
+  new_location.id = "tab" + new_location; /* id name   */
+  tabmarkup = `
+    <button class="dropdown-btn">${Location}
+    <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <button class="dropdown-btn">Creatures
+      <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="#">Zombie</a>
+        <a href="#">Skele</a>
+        <a href="#">Add Creatures</a>
+      </div>
+      <button class="dropdown-btn">Items
+      <i class="fa fa-caret-down"></i>
+      </button>
+        <div class="dropdown-container">
+        <a href="#">Sword</a>
+        <a href="#">Axe</a>
+        <a href="#">Add Items</a>
+      </div>
+    </div>
+  `;
+  new_location.innerHTML = tabmarkup;
+  var Locations = document.getElementById("Locations");
+  Locations.appendChild(new_location);
+}
+
+</script>
+
+<script>
+
+addCreatureCard('1');
+addCreatureCard('2');
+addCreatureCard('3');
 
 function addCreatureCard(cardid)
 {

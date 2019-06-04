@@ -225,6 +225,7 @@ function Add_Location(Location)
 addCreatureCard('1');
 addCreatureCard('2');
 addCreatureCard('3');
+newCreatureCard();
 
 $("input").change(function(e){
 
@@ -244,8 +245,18 @@ $("input").change(function(e){
 
   column = e.target.id;
 
-  queryDB('UPDATE ' + table + ' SET ' + table + '.' + column + '=' + newValue + ' WHERE id'+table + '=' + id);
+  console.log(newValue);
+
+  queryDB(`UPDATE ${table} SET ${table}.${column} = '${newValue}' WHERE id${table} = ${id}`);
 });
+
+function newCreatureCard()
+{
+  var newID = JSON.parse(queryDB('SELECT max(idCreature) from Creature'))[0]["max(idCreature)"] + 1;
+  console.log(newID);
+  queryDB(`INSERT INTO Creature (idCreature, creature_name) VALUES (${newID}, 'New Creature')`);
+  addCreatureCard(newID);
+}
 
 function addCreatureCard(cardid)
 {

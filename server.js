@@ -3,39 +3,39 @@ var mysql = require('mysql'); //imports mysql node module
 const fs = require('fs');
 const http = require('http');
 
-var server = http.createServer(function(req,res){
-    requestString = req.url.replace(/%20/g,' ').slice(1);
+var server = http.createServer(function (req, res) {
+    requestString = req.url.replace(/%20/g, ' ').slice(1);
     console.log("requestString: ", requestString);
-    console.log("Request was made: " + req.url.replace('%20',' ').slice(1) +", "+ req.method);
-    if(requestString.toLowerCase().startsWith("update")) { //update an entity
+    console.log("Request was made: " + req.url.replace('%20', ' ').slice(1) + ", " + req.method);
+    if (requestString.toLowerCase().startsWith("update")) { //update an entity
         connection.query(requestString, function (error) {
-            if(error) throw error;
-            res.writeHead(200, {"Content-Type": 'text/plain'});
+            if (error) throw error;
+            res.writeHead(200, { "Content-Type": 'text/plain' });
             res.end();
         });
-    } else if(requestString.toLowerCase().startsWith("insert")) { //add a new entity
+    } else if (requestString.toLowerCase().startsWith("insert")) { //add a new entity
         connection.query(requestString, function (error) {
-            if(error) throw error;
-            res.writeHead(200, {"Content-Type": 'text/plain'});
+            if (error) throw error;
+            res.writeHead(200, { "Content-Type": 'text/plain' });
             res.end();
         });
-    } else if(requestString.toLowerCase().startsWith("select")) { //display data
-        connection.query(requestString, function(error, results) {
-            if(error) throw error;
+    } else if (requestString.toLowerCase().startsWith("select")) { //display data
+        connection.query(requestString, function (error, results) {
+            if (error) throw error;
             var returnString = results[0].solution;
-            console.log("Result: ", results);
-            res.writeHead(200, {"Content-Type": 'text/plain'});
+            console.log("Result: ", returnString);
+            res.writeHead(200, { "Content-Type": 'text/plain' });
             res.end(JSON.stringify(results));
         });
 
-    } else if(req.url == "/site.html") {
+    } else if (req.url == "/site.html") {
         console.log("Site request");
-        res.writeHead(200, {"Content-Type": 'text/html'});
+        res.writeHead(200, { "Content-Type": 'text/html' });
         var myReadStream = fs.createReadStream('site.html', 'utf8');
         myReadStream.pipe(res);
     } else {
         console.log("Bad query");
-        res.writeHead(200, {"Content-Type": 'text/plain'});
+        res.writeHead(200, { "Content-Type": 'text/plain' });
         res.end();
     }
 });

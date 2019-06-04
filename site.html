@@ -3,6 +3,8 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
+    var xmlHttp = new XMLHttpRequest();
+
     function queryDB(query) {
       xmlHttp.open("GET", `http://localhost:3000/${query}`,false);      
       xmlHttp.send(null);

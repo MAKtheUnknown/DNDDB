@@ -419,8 +419,17 @@
       function closeCard(id) {
         var desktop = document.getElementById("desktop");
         console.log(id);
-        console.log(desktop);
-        desktop.removeChild(document.getElementById(id));
+        try {
+          desktop.removeChild(document.getElementById(id));
+        } catch {
+          //VERY HACKY
+          console.warn("removeChild didn't work, trying backup");
+          var element = document.getElementById(id);
+          console.log(element.parentElement);
+          console.log(desktop);
+          element.parentElement.removeChild(element);
+          closeCard(id);
+        }
       }
       function addAttackEntry(creatureID) {
 

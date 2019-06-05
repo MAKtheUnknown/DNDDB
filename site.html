@@ -220,15 +220,14 @@ select {
           var idLocation = loc_info.idLocation;
           new_location.id = idLocation;
           tabmarkup = `
-    <button class="dropdown-btn">${loc_name}
+    <button id=${idLocation} class="dropdown-btn">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
       <button class="dropdown-btn">Creatures
       <i class="fa fa-caret-down"></i>
       </button>
-      <div class="dropdown-container">
-        <button class="add-creature-btn" onclick="addCreature(this)">Add Creature 
+      <div class="dropdown-container"> 
       `;
           for (j = 0; j < Creatures_size; j++) {
             var crea_info = all_creature_info[j];
@@ -246,7 +245,8 @@ select {
             }
           }
           tabmarkup = tabmarkup +
-            `</div>
+            `<button class="add-creature-btn" onclick="addCreature(this)">Add Creature
+            </div>
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
       </button>
@@ -314,13 +314,19 @@ select {
         queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);
       }
       function newCard(element = null, type = "creature") {
+        var location_id;
+        if(element != null) {
+          location_id = element.parentElement.parentElement.parentElement.id;
+        }
         type = type.toLowerCase();
         var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
-        queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`);
+        queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`); //inserts entity into database
         if (element != null) {
           $(element).parent().prepend(`<button id="${type}_${newID}" class="${type}-btn">New ${type}</button>`)
         }
         if(type.toLowerCase() == "creature") {
+          console.log("location_id: "+ location_id);
+          queryDB("INSERT INTO `DND`.`creatureappearance` (`Location_idLocation`, `Creature_idCreature`, `appearance_specific_information`) VALUES ("+location_id+","+newID+",NULL);");
           addCreatureCard(newID);
         } else {
           console.error("Unknown card type - failed to create card. Card type: "+type);

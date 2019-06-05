@@ -70,7 +70,8 @@
     .sidenav a,
     .dropdown-btn,
     .add-creature-btn,
-    .creature-btn {
+    .creature-btn,
+    .add-item-btn{
       padding: 6px 8px 6px 16px;
       text-decoration: none;
       font-size: 20px;
@@ -100,7 +101,8 @@
     .sidenav a:hover,
     .dropdown-btn:hover,
     .creature-btn:hover,
-    .add-creature-btn:hover {
+    .add-creature-btn:hover,
+    .add-item-btn:hover {
       color: #f1f1f1;
       /* color of whole box when hovering over it */
     }
@@ -301,11 +303,11 @@
           for (j = 0; j < Item_size; j++) {
             var item_info = all_item_info[j];
             var item_name = item_info.item_name;
-            var item_id = item_info.Location_idLocation;
-            var actual_item_id_not_whatever_this_crap_is = item_info.idItem;
-            if (item_id == idLocation) {
+            var item_location = item_info.Location_idLocation;
+            var item_id = item_info.idItem;
+            if (item_location == idLocation) {
               tabmarkup = tabmarkup +
-                `<button class="add-creature-btn" onclick="addItemCard(${actual_item_id_not_whatever_this_crap_is})">${item_name}</button>`;
+                `<button id="${item_id}d" class="add-item-btn" onclick="addItemCard(${item_id})">${item_name}</button>`;
               j = 100;
             }
           }
@@ -399,7 +401,7 @@
 
         cardmarkup = `
     		<div id="${newcard.id}header" class="grip"><input id=item_name style="font-size:25px" type="text" size="10" value="${item.item_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
-    <button onclick=DeleteCard(${itemID})>Delete</button>
+    <button onclick=DeleteItem(${itemID},'${newcard.id}')>Delete</button>
     <p><textarea class=description id=item_description type=text>${item.item_description}</textarea></p>
     <div>
     </div>
@@ -608,6 +610,19 @@
         }
       }
 
+      function DeleteItem(id,cardid){
+        closeCard(cardid);
+        queryDB(`DELETE FROM itemattack WHERE Item_idItem = ${id};`);
+        queryDB(`DELETE FROM item WHERE idItem = ${id};`);
+        try {
+          var del = document.getElementById(id + "d");
+          del.parentNode.removeChild(del);
+        }
+        catch{
+          var del = document.getElementById("item_" + id + "-btn");
+          del.parentNode.removeChild(del);
+      }
+    }
       function isJSON(s) {
         if (/^[\],:{}\s]*$/.test(s.replace(/\\["\\\/bfnrtu]/g, '@').
           replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
@@ -620,7 +635,6 @@
 
       function closeCard(id) {
         var desktop = document.getElementById("desktop");
-        console.log(id);
         try {
           desktop.removeChild(document.getElementById(id));
         } catch {

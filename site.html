@@ -424,6 +424,7 @@ select {
 			}
 	
 			damage.innerHTML = `
+
 			<div>
 			${dmgList}
 			</div>
@@ -431,7 +432,7 @@ select {
           }
 
         }
-        attackTable.insertRow().innerHTML = `*<button onclick=addAttackEntry(${cardid})>+</button>*/`;
+        attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
         dragElement(newcard);
         reloadListeners();
       }
@@ -442,8 +443,9 @@ select {
           replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
           return true;
         return false;
+
 	}
-	attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
+	
 
       function closeCard(id) {
         var desktop = document.getElementById("desktop");
@@ -488,12 +490,7 @@ function deleteAttack(attackID, creatureID, rowID)
 	queryDB(`DELETE FROM Attack WHERE idAttack=${attackID};`);
 
 }
-</script>
 
-
-
-
-<script>
 
 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
 var dropdown = document.getElementsByClassName("dropdown-btn");
@@ -595,7 +592,6 @@ function dragElement(elmnt) {
 })(jQuery, window);
 
 </script>
-
 
 </body>
 

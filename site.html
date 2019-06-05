@@ -235,6 +235,7 @@
     <script>
       add_dropdown();
       function add_dropdown() {
+        var tabmarkup;
         var all_location_info = JSON.parse(queryDB('SELECT * FROM Location;'));
         var all_creature_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
         var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
@@ -271,7 +272,7 @@
               var Creature_idCreature = both_info.Creature_idCreature;
               if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
                 tabmarkup = tabmarkup +
-                  `<button class="add-creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
+                  `<button id="${crea_id}c" class="add-creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
                 k = 100;
               }
             }
@@ -288,7 +289,6 @@
             var item_name = item_info.item_name;
             var item_id = item_info.Location_idLocation;
             if (item_id == idLocation) {
-              console.log("*********************");
               tabmarkup = tabmarkup +
                 `<a href="#">${item_name}</a>`;
               j = 100;
@@ -311,7 +311,6 @@
       }
     </script>
     <script>
-      addCreatureCard('1');
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -383,7 +382,7 @@
         newcard.className = "card entrycontainer";
         cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
-    <button onclick=DeleteCard(${cardid})>Delete</button>
+    <button onclick=DeleteCard(${cardid},'${newcard.id}')>Delete</button>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
     <p>Speed: <input id=speed type="number" value=${creature.speed}>
@@ -487,10 +486,22 @@
         reloadListeners();
       }
 
-      function DeleteCard(id) {
-        console.log(id);
+      function DeleteCard(id,cardid) {
+        closeCard(cardid);
         queryDB(`DELETE FROM creatureattack WHERE Creature_idCreature = ${id};`);
-
+        queryDB(`DELETE FROM creatureappearance WHERE Creature_idCreature = ${id};`);
+        queryDB(`DELETE FROM item WHERE Creature_idCreature = ${id};`);
+        queryDB(`DELETE FROM Creature WHERE template_idCreature = ${id};`);
+        queryDB(`DELETE FROM Creature WHERE idCreature = ${id};`);
+        try { 
+        var del = document.getElementById(id+"c");
+        del.parentNode.removeChild(del);
+        
+        }
+        catch{
+        var del = document.getElementById("creature_"+id+"-btn");
+        del.parentNode.removeChild(del);
+        }
       }
 
       function isJSON(s) {

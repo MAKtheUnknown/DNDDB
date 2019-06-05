@@ -362,7 +362,7 @@
         var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
         queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`); //inserts entity into database
         if (element != null) {
-          $(element).parent().prepend(`<button id="${type}_${newID}-btn" class="${type}-btn">New ${type}</button>`)
+          $(element).parent().prepend(`<button id="${type}_${newID}-btn" class="${type}-btn" onClick="addCreatureCard(${newID})">New ${type}</button>`)//todo
         }
         if (type.toLowerCase() == "creature") {
           console.log("location_id: " + location_id);

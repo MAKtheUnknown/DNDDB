@@ -10,7 +10,6 @@
       return xmlHttp.responseText.replace(/%20/g, ' ');
     }
   </script>
-<<<<<<< HEAD
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
@@ -285,10 +284,12 @@ select {
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
+      $("select").change(function (e) { autoUpdateDB(e) });
 
       function reloadListeners() {
         $("input").change(function (e) { autoUpdateDB(e) });
         $("textarea").change(function (e) { autoUpdateDB(e) });
+        $("select").change(function (e) { autoUpdateDB(e) });
       }
 
 

@@ -395,6 +395,9 @@
         else if (type == "item") {
           table = "Item";
         }
+        else if (type == "location"){
+          table = "Location";
+        }
         column = e.target.id;
 
         queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);

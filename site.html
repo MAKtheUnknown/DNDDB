@@ -563,7 +563,6 @@
         row.parentElement.removeChild(row);
 
         queryDB(`DELETE FROM CreatureAttack WHERE Attack_idAttack=${attackID} AND Creature_idCreature=${creatureID};`);
-        queryDB(`DELETE FROM Attack WHERE idAttack=${attackID};`);
 
       }
 

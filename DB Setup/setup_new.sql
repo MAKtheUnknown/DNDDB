@@ -91,4 +91,5 @@ USE `DND`;
 INSERT INTO `DND`.`Item` (`idItem`, `item_name`, `item_description`, `Location_idLocation`, `Creature_idCreature`, `PlayerCharacter_idPlayerCharacter`) VALUES (1, "Naadia Portel\'s Cloak", 'Makes the wearer resistant to fire.', NULL, NULL, 1);
 INSERT INTO `DND`.`Item` (`idItem`, `item_name`, `item_description`, `Location_idLocation`, `Creature_idCreature`, `PlayerCharacter_idPlayerCharacter`) VALUES (2, 'Weird Ring', ' ', NULL, 7, NULL);
 INSERT INTO `DND`.`Item` (`idItem`, `item_name`, `item_description`, `Location_idLocation`, `Creature_idCreature`, `PlayerCharacter_idPlayerCharacter`) VALUES (3, 'Black Book', '', 11, NULL, NULL);
+INSERT INTO `DND`.`ItemAttack` VALUES (3,5);
 COMMIT;

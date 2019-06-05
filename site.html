@@ -149,6 +149,7 @@
     .card {
       display: table-cell;
       position: absolute;
+      width: 350px;
       z-index: 9;
       background-color: #f1f1f1;
       text-align: left;
@@ -271,7 +272,7 @@
               var Creature_idCreature = both_info.Creature_idCreature;
               if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
                 tabmarkup = tabmarkup +
-                  `<button class="add-creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
+                  `<button id="creature_${crea_id}-btn" class="creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
                 k = 100;
               }
             }

@@ -5,4 +5,6 @@
 * Run `npm install readline`
 * Run `npm install fs`
 * Run `npm install http`
-* Run `node app.js` while in the project directory1
+* Run `npm install mysql`
+* Edit the config as necessary (to reflect your login for MySQL Server)
+* Run `node server.js` while in the project directory1

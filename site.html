@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script>
@@ -10,175 +11,201 @@
       return xmlHttp.responseText.replace(/%20/g, ' ');
     }
   </script>
-<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-  font-family: "Lato", sans-serif;
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  position: fixed;
-}
-.sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 2;
-  top: 70px;
-  left: 0px;
-  overflow-x: hidden;
-  padding-top: 15px; /* space between top side nave */
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-.logo {
-  height:100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: black;
-  background-image: url("https://i.imgur.com/T5vOLr7.jpg");
-  background-position: 0% 0%;
-  background-repeat: no-repeat;
-  background-size: 200px,200px;
-  background-attachment: fixed;
-  overflow-x: hidden;
-  padding-top: 50px; /* space between top side nave */
-}
-/* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn, .add-creature-btn, .creature-btn {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #818181;
-  display: block;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      position: fixed;
+    }
 
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-/* On mouse-over */
-.sidenav a:hover, .dropdown-btn:hover, .creature-btn:hover, .add-creature-btn:hover {
-  color: #f1f1f1; /* color of whole box when hovering over it */
-}
-/* Main content */
-.main {
-  margin-left: 200px; /* Same as the width of the sidenav */
-  font-size: 20px; /* Increased text to enable scrolling */
-  padding: 0px 0px;  /* left gives height and right value further shifts more pad */
-  color:green;
-}
-/* Add an active class to the active dropdown button */
-.active {
-  /*background-color: green;   background when selected */
-  color: white;   /* text when selected */
-}
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      position: fixed;
+      z-index: 2;
+      top: 70px;
+      left: 0px;
+      overflow-x: hidden;
+      padding-top: 15px;
+      /* space between top side nave */
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
 
-/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-.dropdown-container {
-  display: none;
-  background-color: #262626; /* drop down color */
-  padding-left: 14px;    /* shift leters to right  */
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-} 
-/* Optional: Style the caret down icon */
-.fa-caret-down {
-  float: right;
-  padding-right: 8px;
-}
+    .logo {
+      height: 100%;
+      width: 200px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: black;
+      background-image: url("https://i.imgur.com/T5vOLr7.jpg");
+      background-position: 0% 0%;
+      background-repeat: no-repeat;
+      background-size: 200px, 200px;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      padding-top: 50px;
+      /* space between top side nave */
+    }
+
+    /* Style the sidenav links and the dropdown button */
+    .sidenav a,
+    .dropdown-btn,
+    .add-creature-btn,
+    .creature-btn {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #818181;
+      display: block;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
+
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    /* On mouse-over */
+    .sidenav a:hover,
+    .dropdown-btn:hover,
+    .creature-btn:hover,
+    .add-creature-btn:hover {
+      color: #f1f1f1;
+      /* color of whole box when hovering over it */
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 200px;
+      /* Same as the width of the sidenav */
+      font-size: 20px;
+      /* Increased text to enable scrolling */
+      padding: 0px 0px;
+      /* left gives height and right value further shifts more pad */
+      color: green;
+    }
+
+    /* Add an active class to the active dropdown button */
+    .active {
+      /*background-color: green;   background when selected */
+      color: white;
+      /* text when selected */
+    }
+
+    /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+    .dropdown-container {
+      display: none;
+      background-color: #262626;
+      /* drop down color */
+      padding-left: 14px;
+      /* shift leters to right  */
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    /* Optional: Style the caret down icon */
+    .fa-caret-down {
+      float: right;
+      padding-right: 8px;
+    }
 
 
 
-/* Some media queries for responsiveness */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+    /* Some media queries for responsiveness */
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
+      }
 
-.card {
-  display: table-cell;
-  position: absolute;
-  z-index: 9;
-  background-color: #f1f1f1;
-  text-align: left;
-  border: 1px solid #d3d3d3;
-  background-image: url("https://i.imgur.com/UoLHwVf.png");
-  color:#4d1919;
-  width:100%;
-  font-family: "Times New Roman", Times, serif;
-}
+      .sidenav a {
+        font-size: 18px;
+      }
+    }
 
-.grip {
-  padding: 5px;
-  cursor: move;
-  z-index: 0;
-  background-color: #2196F3;
-  background-image: url("https://i.imgur.com/UoLHwVf.png");
-  border: 2px solid #111111;
-  text-align: left;
-}
+    .card {
+      display: table-cell;
+      position: absolute;
+      z-index: 9;
+      background-color: #f1f1f1;
+      text-align: left;
+      border: 1px solid #d3d3d3;
+      background-image: url("https://i.imgur.com/UoLHwVf.png");
+      color: #4d1919;
+      width: 100%;
+      font-family: "Times New Roman", Times, serif;
+    }
 
-.x {
-  float:right;
-  z-index:10;
+    .grip {
+      padding: 5px;
+      cursor: move;
+      z-index: 0;
+      background-color: #2196F3;
+      background-image: url("https://i.imgur.com/UoLHwVf.png");
+      border: 2px solid #111111;
+      text-align: left;
+    }
 
-}
+    .x {
+      float: right;
+      z-index: 10;
 
-.singlestat {
-  float:left;
-  text-align: center;
-  line-height: 20px;
-  padding: 0;
-  margin:0;
-}
+    }
 
-.description {
-  overflow:auto;
-  width:90%;
-  background-color: rgba(0, 0, 0, 0.01)
-}
+    .singlestat {
+      float: left;
+      text-align: center;
+      line-height: 20px;
+      padding: 0;
+      margin: 0;
+    }
 
-.dmgBox {
-  width:50px;
-}
+    .description {
+      overflow: auto;
+      width: 90%;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
 
-button {
-   background-color: rgba(0, 0, 0, 0.01)
-}
+    .dmgBox {
+      width: 50px;
+    }
 
-input[type="number"] {
-   width:50px;
-   cursor: auto;
-   background-color: rgba(0, 0, 0, 0.01)
-}
+    button {
+      background-color: rgba(0, 0, 0, 0.01)
+    }
 
-input[type="text"] {
-   cursor: auto;
-   background-color: rgba(0, 0, 0, 0.01)
-}
+    input[type="number"] {
+      width: 50px;
+      cursor: auto;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
 
-select {
-   width: 60px;
-   background-color: rgba(0, 0, 0, 0.01)
-}
+    input[type="text"] {
+      cursor: auto;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
 
-</style>
+    select {
+      width: 60px;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
+  </style>
 
 </head>
 
@@ -244,7 +271,7 @@ select {
             }
           }
           tabmarkup = tabmarkup +
-            `<button class="add-creature-btn" onclick="addCreature(this)">Add Creature
+            `<button class="add-creature-btn" onclick="addCreature(this)">Add Creature</button>
             </div>
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
@@ -295,7 +322,15 @@ select {
 
       function autoUpdateDB(e) {
         var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
-        console.log($(e.target));
+        console.log("ccid: " + changedCardId)
+        console.log(document.getElementById(changedCardId + '-btn'))
+        var val1 = document.getElementById(changedCardId + '-btn').textContent;
+        console.log("Val1: ",val1);
+        var val2 = document.getElementById(changedCardId + "header").getElementsByTagName("input")[0].value;
+        console.log("val2: ", val2);
+        if (val1 != val2) {
+          document.getElementById(changedCardId + '-btn').textContent = document.getElementById(changedCardId + "header").getElementsByTagName("input")[0].value;
+        }
         var ccidComponents = changedCardId.split('_');
         var type = ccidComponents[0];
         var id = ccidComponents[1];
@@ -316,26 +351,26 @@ select {
       }
       function newCard(element = null, type = "creature") {
         var location_id;
-        if(element != null) {
+        if (element != null) {
           location_id = element.parentElement.parentElement.parentElement.id;
         }
         type = type.toLowerCase();
         var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
         queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`); //inserts entity into database
         if (element != null) {
-          $(element).parent().prepend(`<button id="${type}_${newID}" class="${type}-btn">New ${type}</button>`)
+          $(element).parent().prepend(`<button id="${type}_${newID}-btn" class="${type}-btn">New ${type}</button>`)
         }
-        if(type.toLowerCase() == "creature") {
-          console.log("location_id: "+ location_id);
-          queryDB("INSERT INTO `DND`.`creatureappearance` (`Location_idLocation`, `Creature_idCreature`, `appearance_specific_information`) VALUES ("+location_id+","+newID+",NULL);");
+        if (type.toLowerCase() == "creature") {
+          console.log("location_id: " + location_id);
+          queryDB("INSERT INTO `DND`.`creatureappearance` (`Location_idLocation`, `Creature_idCreature`, `appearance_specific_information`) VALUES (" + location_id + "," + newID + ",NULL);");
           addCreatureCard(newID);
         } else {
-          console.error("Unknown card type - failed to create card. Card type: "+type);
+          console.error("Unknown card type - failed to create card. Card type: " + type);
         }
       }
       function newCreatureCard(element = null, type = "creature") {
         console.warn("newCreatureCard is deprecated - please use newCard instead");
-        newCard(element,type);
+        newCard(element, type);
       }
       function addCreatureCard(cardid) {
         var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature=' + cardid + ';'))[0];
@@ -370,46 +405,43 @@ select {
         var desktop = document.getElementById("desktop");
         desktop.appendChild(newcard);
 
-	var attackQuery = queryDB(`SELECT * FROM CreatureAttack LEFT JOIN Attack ON Attack_idAttack=idAttack WHERE Creature_idCreature=${cardid};`);
+        var attackQuery = queryDB(`SELECT * FROM CreatureAttack LEFT JOIN Attack ON Attack_idAttack=idAttack WHERE Creature_idCreature=${cardid};`);
 
-	var attacks = null;
-	console.log(attackQuery);
-	if(attackQuery != null && isJSON(attackQuery) && attackQuery != "undefined" && attackQuery != "")
-		attacks = JSON.parse(attackQuery);
+        var attacks = null;
+        console.log(attackQuery);
+        if (attackQuery != null && isJSON(attackQuery) && attackQuery != "undefined" && attackQuery != "")
+          attacks = JSON.parse(attackQuery);
 
 
-	var attackTable = document.getElementById(`${cardid}_attacks`);
+        var attackTable = document.getElementById(`${cardid}_attacks`);
 
-	for(i in attacks)
-	{
-		var newRow = attackTable.insertRow();
-		var attack = attacks[i];
-		newRow.className = 'entrycontainer';
-		newRow.id = 'attack_' + attack.idAttack;
+        for (i in attacks) {
+          var newRow = attackTable.insertRow();
+          var attack = attacks[i];
+          newRow.className = 'entrycontainer';
+          newRow.id = 'attack_' + attack.idAttack;
 
-		var name = newRow.insertCell(0);
-		var modifier = newRow.insertCell(1);		
-		var damage = newRow.insertCell(2);
-		var description = newRow.insertCell(3);
-		var rowX = newRow.insertCell(4);
-	
-		name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
-		modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`; 
-		description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
+          var name = newRow.insertCell(0);
+          var modifier = newRow.insertCell(1);
+          var damage = newRow.insertCell(2);
+          var description = newRow.insertCell(3);
+          var rowX = newRow.insertCell(4);
 
-		rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${attack.idAttack}, ${cardid}, ${newRow.id})">X</button></div>`;
+          name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
+          modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`;
+          description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
 
-		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
-		var damages = null;
-		if(damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "")
-		{
-			damages = JSON.parse(damageQuery);
+          rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${attack.idAttack}, ${cardid}, ${newRow.id})">X</button></div>`;
 
-			dmgList = ""
-			for (j in damages)
-			{
-				var d = damages[j];
-				dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
+          var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
+          var damages = null;
+          if (damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "") {
+            damages = JSON.parse(damageQuery);
+
+            dmgList = ""
+            for (j in damages) {
+              var d = damages[j];
+              dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
 				<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}>
 				<select id=damage_type selected=${d.damage_type} class="btn btn-select resizeselect" value=${d.damage_type}>
 					<option value=${d.damage_type} selected disabled hidden>${d.damage_type}</option>
@@ -428,9 +460,9 @@ select {
 					<option>thunder</option>
 				</select>
 				</p>`
-			}
-	
-			damage.innerHTML = `
+            }
+
+            damage.innerHTML = `
 
 			<div>
 			${dmgList}
@@ -451,8 +483,8 @@ select {
           return true;
         return false;
 
-	}
-	
+      }
+
 
       function closeCard(id) {
         var desktop = document.getElementById("desktop");
@@ -479,135 +511,133 @@ select {
         queryDB(`INSERT INTO CreatureAttack (Attack_idAttack, Creature_idCreature) 
 			VALUES (${newID}, ${creatureID});`);
 
-	var newRow = attackTable.insertRow();
-	newRow.className = 'entrycontainer';
-	newRow.id = 'attack_' + newID;
+        var newRow = attackTable.insertRow();
+        newRow.className = 'entrycontainer';
+        newRow.id = 'attack_' + newID;
 
-	var name = newRow.insertCell(0);
-	var modifier = newRow.insertCell(1);		
-	var damage = newRow.insertCell(2);
-	var description = newRow.insertCell(3);
-	var rowX = newRow.insertCell(4);
+        var name = newRow.insertCell(0);
+        var modifier = newRow.insertCell(1);
+        var damage = newRow.insertCell(2);
+        var description = newRow.insertCell(3);
+        var rowX = newRow.insertCell(4);
 
-	name.innerHTML = `<input id=attack_name type=text style="width:40%">`;
-	modifier.innerHTML = `<input id=attack_modifier type=number>`; 
-	description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text></textarea>`;
-	rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${newID}, ${creatureID}, ${newRow.id})">X</button></div>`;
-	reloadListeners();
+        name.innerHTML = `<input id=attack_name type=text style="width:40%">`;
+        modifier.innerHTML = `<input id=attack_modifier type=number>`;
+        description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text></textarea>`;
+        rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${newID}, ${creatureID}, ${newRow.id})">X</button></div>`;
+        reloadListeners();
 
-}
+      }
 
-function deleteAttack(attackID, creatureID, rowID)
-{
-	var row = document.getElementById('attack_'+attackID);
-	row.parentElement.removeChild(row);
+      function deleteAttack(attackID, creatureID, rowID) {
+        var row = document.getElementById('attack_' + attackID);
+        row.parentElement.removeChild(row);
 
-	queryDB(`DELETE FROM CreatureAttack WHERE Attack_idAttack=${attackID} AND Creature_idCreature=${creatureID};`);
-	queryDB(`DELETE FROM Attack WHERE idAttack=${attackID};`);
+        queryDB(`DELETE FROM CreatureAttack WHERE Attack_idAttack=${attackID} AND Creature_idCreature=${creatureID};`);
+        queryDB(`DELETE FROM Attack WHERE idAttack=${attackID};`);
 
-}
+      }
 
 
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
-  dropdownContent.style.display = "block";
-  }
-  });
-}
-
-//Make the DIV element draggagle:
-
-var deck = document.getElementsByClassName("card");
-for (i in deck)
-{
-  dragElement(deck[i]);
-}
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    /* if present, the header is where you move the DIV from:*/
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    /* otherwise, move the DIV from anywhere inside the DIV:*/
-    elmnt.onmousedown = dragMouseDown;
-  }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    /* stop moving when mouse button is released:*/
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-
-(function($, window){
-  var arrowWidth = 30;
-
-  $.fn.resizeselect = function(settings) {  
-    return this.each(function() { 
-
-      $(this).change(function(){
-        var $this = $(this);
-
-        // create test element
-        var text = $this.find("option:selected").text();
-        var $test = $("<span>").html(text).css({
-            "font-size": $this.css("font-size"), // ensures same size text
-            "visibility": "hidden"               // prevents FOUC
+      /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+      var dropdown = document.getElementsByClassName("dropdown-btn");
+      var i;
+      for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+          } else {
+            dropdownContent.style.display = "block";
+          }
         });
+      }
+
+      //Make the DIV element draggagle:
+
+      var deck = document.getElementsByClassName("card");
+      for (i in deck) {
+        dragElement(deck[i]);
+      }
+
+      function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+          /* if present, the header is where you move the DIV from:*/
+          document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+          /* otherwise, move the DIV from anywhere inside the DIV:*/
+          elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+          e = e || window.event;
+          // get the mouse cursor position at startup:
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = closeDragElement;
+          // call a function whenever the cursor moves:
+          document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // calculate the new cursor position:
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          // set the element's new position:
+          elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+          elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+          /* stop moving when mouse button is released:*/
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
+
+      (function ($, window) {
+        var arrowWidth = 30;
+
+        $.fn.resizeselect = function (settings) {
+          return this.each(function () {
+
+            $(this).change(function () {
+              var $this = $(this);
+
+              // create test element
+              var text = $this.find("option:selected").text();
+              var $test = $("<span>").html(text).css({
+                "font-size": $this.css("font-size"), // ensures same size text
+                "visibility": "hidden"               // prevents FOUC
+              });
 
 
-        // add to parent, get width, and get out
-        $test.appendTo($this.parent());
-        var width = $test.width();
-        $test.remove();
+              // add to parent, get width, and get out
+              $test.appendTo($this.parent());
+              var width = $test.width();
+              $test.remove();
 
-        // set select width
-        $this.width(width + arrowWidth);
+              // set select width
+              $this.width(width + arrowWidth);
 
-        // run on start
-      }).change();
+              // run on start
+            }).change();
 
-    });
-  };
+          });
+        };
 
-  // run by default
-  $("select.resizeselect").resizeselect();                       
+        // run by default
+        $("select.resizeselect").resizeselect();
 
-})(jQuery, window);
+      })(jQuery, window);
 
-</script>
+    </script>
 
 </body>
 

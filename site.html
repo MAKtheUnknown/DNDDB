@@ -1,194 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script>
     var xmlHttp = new XMLHttpRequest();
-    
+
     function queryDB(query) {
-      xmlHttp.open("GET", `http://localhost:3000/${query}`,false);      
+      xmlHttp.open("GET", `http://localhost:3000/${query}`, false);
       xmlHttp.send(null);
-      return xmlHttp.responseText.replace(/%20/g,' ');
+      return xmlHttp.responseText.replace(/%20/g, ' ');
     }
   </script>
-<meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-  font-family: "Lato", sans-serif;
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  position: fixed;
-}
-.sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 2;
-  top: 70px;
-  left: 0px;
-  overflow-x: hidden;
-  padding-top: 15px; /* space between top side nave */
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-.logo {
-  height:100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: black;
-  background-image: url("https://i.imgur.com/T5vOLr7.jpg");
-  background-position: 0% 0%;
-  background-repeat: no-repeat;
-  background-size: 200px,200px;
-  background-attachment: fixed;
-  overflow-x: hidden;
-  padding-top: 50px; /* space between top side nave */
-}
-/* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn, .add-creature-btn, .creature-btn {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #818181;
-  display: block;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  outline: none;
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      position: fixed;
+    }
 
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-}
-/* On mouse-over */
-.sidenav a:hover, .dropdown-btn:hover, .add-creature-btn:hover, .creature-btn:hover {
-  color: #f1f1f1; /* color of whole box when hovering over it */
-}
-/* Main content */
-.main {
-  margin-left: 200px; /* Same as the width of the sidenav */
-  font-size: 20px; /* Increased text to enable scrolling */
-  padding: 0px 0px;  /* left gives height and right value further shifts more pad */
-  color:green;
-}
-/* Add an active class to the active dropdown button */
-.active {
-  /*background-color: green;   background when selected */
-  color: white;   /* text when selected */
-}
+    .sidenav {
+      height: 100%;
+      width: 200px;
+      position: fixed;
+      z-index: 2;
+      top: 70px;
+      left: 0px;
+      overflow-x: hidden;
+      padding-top: 15px;
+      /* space between top side nave */
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
 
-/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
-.dropdown-container {
-  display: none;
-  background-color: #262626; /* drop down color */
-  padding-left: 14px;    /* shift leters to right  */
-  background-image: url("https://i.imgur.com/t3FGMcO.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-} 
-/* Optional: Style the caret down icon */
-.fa-caret-down {
-  float: right;
-  padding-right: 8px;
-}
+    .logo {
+      height: 100%;
+      width: 200px;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: black;
+      background-image: url("https://i.imgur.com/T5vOLr7.jpg");
+      background-position: 0% 0%;
+      background-repeat: no-repeat;
+      background-size: 200px, 200px;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      padding-top: 50px;
+      /* space between top side nave */
+    }
 
+    /* Style the sidenav links and the dropdown button */
+    .sidenav a,
+    .dropdown-btn,
+    .add-creature-btn,
+    .creature-btn {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #818181;
+      display: block;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
 
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
 
-/* Some media queries for responsiveness */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
+    /* On mouse-over */
+    .sidenav a:hover,
+    .dropdown-btn:hover,
+    .add-creature-btn:hover,
+    .creature-btn:hover {
+      color: #f1f1f1;
+      /* color of whole box when hovering over it */
+    }
 
-.card {
-  display: table-cell;
-  position: absolute;
-  z-index: 9;
-  background-color: #f1f1f1;
-  text-align: left;
-  border: 1px solid #d3d3d3;
-  background-image: url("https://i.imgur.com/UoLHwVf.png");
-  color:#4d1919;
-  width:100%;
-  font-family: "Times New Roman", Times, serif;
-}
+    /* Main content */
+    .main {
+      margin-left: 200px;
+      /* Same as the width of the sidenav */
+      font-size: 20px;
+      /* Increased text to enable scrolling */
+      padding: 0px 0px;
+      /* left gives height and right value further shifts more pad */
+      color: green;
+    }
 
-.grip {
-  padding: 5px;
-  cursor: move;
-  z-index: 0;
-  background-color: #2196F3;
-  background-image: url("https://i.imgur.com/UoLHwVf.png");
-  border: 2px solid #111111;
-  text-align: left;
-}
+    /* Add an active class to the active dropdown button */
+    .active {
+      /*background-color: green;   background when selected */
+      color: white;
+      /* text when selected */
+    }
 
-.x {
-  float:right;
-  z-index:10;
+    /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+    .dropdown-container {
+      display: none;
+      background-color: #262626;
+      /* drop down color */
+      padding-left: 14px;
+      /* shift leters to right  */
+      background-image: url("https://i.imgur.com/t3FGMcO.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
 
-}
-
-.singlestat {
-  float:left;
-  text-align: center;
-  line-height: 20px;
-  padding: 0;
-  margin:0;
-}
-
-.description {
-  overflow:auto;
-  width:90%;
-  background-color: rgba(0, 0, 0, 0.01)
-}
-
-.dmgBox {
-  width:50px;
-}
-
-button {
-   background-color: rgba(0, 0, 0, 0.01)
-}
-
-input[type="number"] {
-   width:50px;
-   cursor: auto;
-   background-color: rgba(0, 0, 0, 0.01)
-}
-
-input[type="text"] {
-   cursor: auto;
-   background-color: rgba(0, 0, 0, 0.01)
-}
+    /* Optional: Style the caret down icon */
+    .fa-caret-down {
+      float: right;
+      padding-right: 8px;
+    }
 
 
-</style>
+
+    /* Some media queries for responsiveness */
+    @media screen and (max-height: 450px) {
+      .sidenav {
+        padding-top: 15px;
+      }
+
+      .sidenav a {
+        font-size: 18px;
+      }
+    }
+
+    .card {
+      display: table-cell;
+      position: absolute;
+      z-index: 9;
+      background-color: #f1f1f1;
+      text-align: left;
+      border: 1px solid #d3d3d3;
+      background-image: url("https://i.imgur.com/UoLHwVf.png");
+      color: #4d1919;
+      width: 100%;
+      font-family: "Times New Roman", Times, serif;
+    }
+
+    .grip {
+      padding: 5px;
+      cursor: move;
+      z-index: 0;
+      background-color: #2196F3;
+      background-image: url("https://i.imgur.com/UoLHwVf.png");
+      border: 2px solid #111111;
+      text-align: left;
+    }
+
+    .x {
+      float: right;
+      z-index: 10;
+
+    }
+
+    .singlestat {
+      float: left;
+      text-align: center;
+      line-height: 20px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .description {
+      overflow: auto;
+      width: 90%;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
+
+    .dmgBox {
+      width: 50px;
+    }
+
+    button {
+      background-color: rgba(0, 0, 0, 0.01)
+    }
+
+    input[type="number"] {
+      width: 50px;
+      cursor: auto;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
+
+    input[type="text"] {
+      cursor: auto;
+      background-color: rgba(0, 0, 0, 0.01)
+    }
+  </style>
 
 </head>
 
 <body>
 
-<div class="logo"> </div>
-<div class="sidenav" id="sidenav">
-  <button id="Location-btn" class="dropdown-btn">Location 
-    <i class="fa fa-caret-down"></i>
-  </button>
-  <div class="dropdown-container" id="Locations">
+  <div class="logo"> </div>
+  <div class="sidenav" id="sidenav">
+    <button id="Location-btn" class="dropdown-btn">Location
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container" id="Locations">
+    </div>
   </div>
-</div>
 
   <div id="desktop" class="main">
     <h2>DND</h2>
@@ -196,27 +222,26 @@ input[type="text"] {
 
 
 
-<script>
-add_dropdown();
-function add_dropdown()
-{
-  var all_location_info = JSON.parse(queryDB('SELECT * FROM Location;'));
-  var all_creature_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
-  var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
-  var all_item_info = JSON.parse(queryDB('SELECT * FROM Item;'));
-  var Location_size = all_location_info.length;
-  var Creatures_size = all_creature_info.length;
-  var Item_size = all_item_info.length;
-  var i;
-  var j;
-  var k;
-  for (i = 0; i < Location_size; i++) {
-    var new_location = document.createElement('dropdown-btn'); 
-    var loc_info = all_location_info[i]
-    var loc_name = loc_info.location_name;
-    var idLocation = loc_info.idLocation;
-    new_location.id = idLocation;
-    tabmarkup = `
+    <script>
+      add_dropdown();
+      function add_dropdown() {
+        var all_location_info = JSON.parse(queryDB('SELECT * FROM Location;'));
+        var all_creature_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
+        var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
+        var all_item_info = JSON.parse(queryDB('SELECT * FROM Item;'));
+        var Location_size = all_location_info.length;
+        var Creatures_size = all_creature_info.length;
+        var Item_size = all_item_info.length;
+        var i;
+        var j;
+        var k;
+        for (i = 0; i < Location_size; i++) {
+          var new_location = document.createElement('dropdown-btn');
+          var loc_info = all_location_info[i]
+          var loc_name = loc_info.location_name;
+          var idLocation = loc_info.idLocation;
+          new_location.id = idLocation;
+          tabmarkup = `
     <button class="dropdown-btn">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
@@ -225,112 +250,119 @@ function add_dropdown()
       <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-container">
+        <button class="add-creature-btn" onclick="addCreature(this)">Add Creature 
       `;
-    for (j = 0; j < Creatures_size; j++) {
-      var crea_info = all_creature_info[j];
-      var crea_name = crea_info.creature_name;
-      var crea_id = crea_info.idCreature;
-      for (k = 0; k < Creatures_size; k++) {
-        var both_info = all_both_info[k];
-        var Location_idLocation = both_info.Location_idLocation;
-        var Creature_idCreature = both_info.Creature_idCreature;
-        if (crea_id == Creature_idCreature && Location_idLocation == idLocation ) {
-          tabmarkup = tabmarkup + 
-          `<a href="#">${crea_name}</a>`;
-          k = 100;
-        }
-      }
-    }
-    tabmarkup = tabmarkup +
-    `</div>
+          for (j = 0; j < Creatures_size; j++) {
+            var crea_info = all_creature_info[j];
+            var crea_name = crea_info.creature_name;
+            var crea_id = crea_info.idCreature;
+            for (k = 0; k < Creatures_size; k++) {
+              var both_info = all_both_info[k];
+              var Location_idLocation = both_info.Location_idLocation;
+              var Creature_idCreature = both_info.Creature_idCreature;
+              if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
+                tabmarkup = tabmarkup +
+                  `<a href="#">${crea_name}</a>`;
+                k = 100;
+              }
+            }
+          }
+          tabmarkup = tabmarkup +
+            `</div>
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
       </button>
         <div class="dropdown-container">`;
-    for (j = 0; j < Item_size; j++) {
-      var item_info = all_item_info[j];
-      var item_name = item_info.item_name;
-      var item_id = item_info.Location_idLocation;
-      if (item_id == idLocation) {
-        console.log("*********************");
-        tabmarkup = tabmarkup + 
-        `<a href="#">${item_name}</a>`;
-        j = 100;
-        }
-      }
-      tabmarkup = tabmarkup + 
-      `</div>
+          for (j = 0; j < Item_size; j++) {
+            var item_info = all_item_info[j];
+            var item_name = item_info.item_name;
+            var item_id = item_info.Location_idLocation;
+            if (item_id == idLocation) {
+              console.log("*********************");
+              tabmarkup = tabmarkup +
+                `<a href="#">${item_name}</a>`;
+              j = 100;
+            }
+          }
+          tabmarkup = tabmarkup +
+            `</div>
     </div>`;
-  new_location.innerHTML = tabmarkup;
-  var Locations = document.getElementById("Locations");
-  Locations.appendChild(new_location);
-  }
+          new_location.innerHTML = tabmarkup;
+          var Locations = document.getElementById("Locations");
+          Locations.appendChild(new_location);
+        }
 
-}
-</script>
+      }
+    </script>
 
-<!-- for adding creatures-->
-<script> 
-  function addCreature(element) {
-    newCreatureCard(element);
-  }
-</script>
-<script>
+    <!-- for adding creatures-->
+    <script>
+      function addCreature(el) {
+        newCreatureCard(el);
+      }
+    </script>
+    <script>
 
-addCreatureCard('1');
-addCreatureCard('2');
+      addCreatureCard('1');
+      addCreatureCard('2');
 
-$("input").change(function(e){autoUpdateDB(e)});
-$("textarea").change(function(e){autoUpdateDB(e)});
+      $("input").change(function (e) { autoUpdateDB(e) });
+      $("textarea").change(function (e) { autoUpdateDB(e) });
 
-function autoUpdateDB(e)
-{
-  var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
-  var ccidComponents = changedCardId.split('_');
-  var type = ccidComponents[0];
-  var id = ccidComponents[1];
+      function autoUpdateDB(e) {
+        var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
+        console.log($(e.target));
+        var ccidComponents = changedCardId.split('_');
+        var type = ccidComponents[0];
+        var id = ccidComponents[1];
 
-  var newValue = e.target.value;
+        var newValue = e.target.value;
 
-  var table = '';
+        var table = '';
 
-  if(type == "creature")
-  {
-    table = "Creature";
-  }  
-  else if(type == "attack")
-  {
-    table = "Attack";
-  }  
-  else if(type == "damage")
-  {
-    table = "Damage";
-  }  
+        if (type == "creature") {
+          table = "Creature";
+        }
+        else if (type == "attack") {
+          table = "Attack";
+        }
+        else if (type == "damage") {
+          table = "Damage";
+        }
 
-  column = e.target.id;
+        column = e.target.id;
 
-  queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "`" +`${newValue}` + "`" +` WHERE id${table} = ${id}`);
-}
+        queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "`" + `${newValue}` + "`" + ` WHERE id${table} = ${id}`);
+      }
 
-function newCreatureCard(type="Creature",element = null)
-{
-  var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${Creature})`] + 1;
-  queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New Creature')`);
-  if(element != null) {
-    $(element).prepend(`<button id="${newid}" class="creature-btn"></button>`)
-  }
-  addCreatureCard(newID);
-}
+      function newCard(element = null, type = "creature") {
+        type = type.toLowerCase();
+        var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
+        queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`);
+        if (element != null) {
+          $(element).parent().prepend(`<button id="${type}_${newID}" class="${type}-btn">New ${type}</button>`)
+        }
+        if(type.toLowerCase() == "creature") {
+          addCreatureCard(newID);
+        } else {
+          console.error("Unknown card type - failed to create card. Card type: "+type);
+        }
 
-function addCreatureCard(cardid)
-{
+      }
 
-  var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature='+cardid+';'))[0];
-  var newcard = document.createElement('div');
-  newcard.id = "creature_" + cardid;
-  newcard.className="card entrycontainer";
+      function newCreatureCard(element = null, type = "creature") {
+        console.warn("newCreatureCard is deprecated - please use newCard instead");
+        newCard(element,type);
+      }
 
-  cardmarkup = `
+      function addCreatureCard(cardid) {
+
+        var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature=' + cardid + ';'))[0];
+        var newcard = document.createElement('div');
+        newcard.id = "creature_" + cardid;
+        newcard.className = "card entrycontainer";
+
+        cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
@@ -355,142 +387,128 @@ function addCreatureCard(cardid)
     </div>
   `;
         newcard.innerHTML = cardmarkup;
-  
+
         var desktop = document.getElementById("desktop");
         desktop.appendChild(newcard);
 
-  var attackQuery = queryDB(`SELECT * FROM CreatureAttack LEFT JOIN Attack ON Attack_idAttack=idAttack WHERE Creature_idCreature=${cardid};`);
+        var attackQuery = queryDB(`SELECT * FROM CreatureAttack LEFT JOIN Attack ON Attack_idAttack=idAttack WHERE Creature_idCreature=${cardid};`);
 
-  var attacks = null;
-  console.log(attackQuery);
-  if(attackQuery != null)
-    attacks = JSON.parse(attackQuery);
+        var attacks = null;
+        console.log(attackQuery);
+        if (attackQuery != null)
+          attacks = JSON.parse(attackQuery);
 
-  var attackTable = document.getElementById(`${cardid}_attacks`);
+        var attackTable = document.getElementById(`${cardid}_attacks`);
 
-  for(i in attacks)
-  {
-    var newRow = attackTable.insertRow();
-    var attack = attacks[i];
-    newRow.className = 'entrycontainer';
-    newRow.id = 'attack_' + attack.idAttack;
+        for (i in attacks) {
+          var newRow = attackTable.insertRow();
+          var attack = attacks[i];
+          newRow.className = 'entrycontainer';
+          newRow.id = 'attack_' + attack.idAttack;
 
-    var name = newRow.insertCell(0);
-    var modifier = newRow.insertCell(1);    
-    var damage = newRow.insertCell(2);
-    var description = newRow.insertCell(3);
-  
-    name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
-    modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`; 
-    description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
+          var name = newRow.insertCell(0);
+          var modifier = newRow.insertCell(1);
+          var damage = newRow.insertCell(2);
+          var description = newRow.insertCell(3);
 
-    var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
-    var damages = JSON.parse(damageQuery);
+          name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
+          modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`;
+          description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
 
-    dmgList = ""
-    for (j in damages)
-    {
-      var d = damages[j];
-      dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
+          var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
+          var damages = JSON.parse(damageQuery);
+
+          dmgList = ""
+          for (j in damages) {
+            var d = damages[j];
+            dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
         <input id=damage_roll type=text class=dmgBox value=${d.damage_roll}> ${d.damage_type}</p>`
-    }
+          }
 
-    damage.innerHTML = `
+          damage.innerHTML = `
     <div>
     ${dmgList}
     </div>
     `;
-  }
-  attackTable.insertRow().innerHTML = `*<button>+</button>*/`;
+        }
+        attackTable.insertRow().innerHTML = `*<button>+</button>*/`;
+        dragElement(newcard);
+      }
 
-  
+      function closeCard(id) {
+        var desktop = document.getElementById("desktop");
+        desktop.removeChild(document.getElementById(id));
+      }
+
+      function addAttackEntry(creatureID) {
+        var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
+        queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, '?')`);
 
       }
 
-function closeCard(id)
-{
-  var desktop = document.getElementById("desktop");
-  desktop.removeChild(document.getElementById(id));
-}
+      /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+      var dropdown = document.getElementsByClassName("dropdown-btn");
+      var i;
+      for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+          } else {
+            dropdownContent.style.display = "block";
+          }
+        });
+      }
 
-function addAttackEntry(creatureID)
-{
-  var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
-    queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, '?')`);
-    
-}
+      //Make the DIV element draggagle:
 
-</script>
+      var deck = document.getElementsByClassName("card");
+      for (i in deck) {
+        dragElement(deck[i]);
+      }
 
+      function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+          /* if present, the header is where you move the DIV from:*/
+          document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+          /* otherwise, move the DIV from anywhere inside the DIV:*/
+          elmnt.onmousedown = dragMouseDown;
+        }
 
+        function dragMouseDown(e) {
+          e = e || window.event;
+          // get the mouse cursor position at startup:
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = closeDragElement;
+          // call a function whenever the cursor moves:
+          document.onmousemove = elementDrag;
+        }
 
+        function elementDrag(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // calculate the new cursor position:
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          // set the element's new position:
+          elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+          elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
 
-<script>
+        function closeDragElement() {
+          /* stop moving when mouse button is released:*/
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
 
-/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-var dropdown = document.getElementsByClassName("dropdown-btn");
-var i;
-for (i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-  this.classList.toggle("active");
-  var dropdownContent = this.nextElementSibling;
-  if (dropdownContent.style.display === "block") {
-  dropdownContent.style.display = "none";
-  } else {
-  dropdownContent.style.display = "block";
-  }
-  });
-}
-
-//Make the DIV element draggagle:
-
-var deck = document.getElementsByClassName("card");
-for (i in deck)
-{
-  dragElement(deck[i]);
-}
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    /* if present, the header is where you move the DIV from:*/
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    /* otherwise, move the DIV from anywhere inside the DIV:*/
-    elmnt.onmousedown = dragMouseDown;
-  }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    /* stop moving when mouse button is released:*/
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-
-</script>
+    </script>
 
 
 </body>

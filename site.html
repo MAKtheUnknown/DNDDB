@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script>
     var xmlHttp = new XMLHttpRequest();
-    
     function queryDB(query) {
-      xmlHttp.open("GET", `http://localhost:3000/${query}`,false);      
+      xmlHttp.open("GET", `http://localhost:3000/${query}`, false);
       xmlHttp.send(null);
-      return xmlHttp.responseText.replace(/%20/g,' ');
+      return xmlHttp.responseText.replace(/%20/g, ' ');
     }
   </script>
+<<<<<<< HEAD
 <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
@@ -53,7 +53,7 @@ body {
   padding-top: 50px; /* space between top side nave */
 }
 /* Style the sidenav links and the dropdown button */
-.sidenav a, .dropdown-btn, .add-creature-btn {
+.sidenav a, .dropdown-btn, .add-creature-btn .creature-btn {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 20px;
@@ -185,14 +185,14 @@ select {
 
 <body>
 
-<div class="logo"> </div>
-<div class="sidenav" id="sidenav">
-  <button id="Location-btn" class="dropdown-btn">Location 
-    <i class="fa fa-caret-down"></i>
-  </button>
-  <div class="dropdown-container" id="Locations">
+  <div class="logo"> </div>
+  <div class="sidenav" id="sidenav">
+    <button id="Location-btn" class="dropdown-btn">Location
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container" id="Locations">
+    </div>
   </div>
-</div>
 
   <div id="desktop" class="main">
     <h2>DND</h2>
@@ -200,27 +200,26 @@ select {
 
 
 
-<script>
-add_dropdown();
-function add_dropdown()
-{
-  var all_location_info = JSON.parse(queryDB('SELECT * FROM Location;'));
-  var all_creature_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
-  var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
-  var all_item_info = JSON.parse(queryDB('SELECT * FROM Item;'));
-  var Location_size = all_location_info.length;
-  var Creatures_size = all_creature_info.length;
-  var Item_size = all_item_info.length;
-  var i;
-  var j;
-  var k;
-  for (i = 0; i < Location_size; i++) {
-    var new_location = document.createElement('dropdown-btn'); 
-    var loc_info = all_location_info[i]
-    var loc_name = loc_info.location_name;
-    var idLocation = loc_info.idLocation;
-    new_location.id = idLocation;
-    tabmarkup = `
+    <script>
+      add_dropdown();
+      function add_dropdown() {
+        var all_location_info = JSON.parse(queryDB('SELECT * FROM Location;'));
+        var all_creature_info = JSON.parse(queryDB('SELECT * FROM Creature;'));
+        var all_both_info = JSON.parse(queryDB('SELECT * FROM CreatureAppearance;'));
+        var all_item_info = JSON.parse(queryDB('SELECT * FROM Item;'));
+        var Location_size = all_location_info.length;
+        var Creatures_size = all_creature_info.length;
+        var Item_size = all_item_info.length;
+        var i;
+        var j;
+        var k;
+        for (i = 0; i < Location_size; i++) {
+          var new_location = document.createElement('dropdown-btn');
+          var loc_info = all_location_info[i]
+          var loc_name = loc_info.location_name;
+          var idLocation = loc_info.idLocation;
+          new_location.id = idLocation;
+          tabmarkup = `
     <button class="dropdown-btn">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
@@ -229,120 +228,114 @@ function add_dropdown()
       <i class="fa fa-caret-down"></i>
       </button>
       <div class="dropdown-container">
+        <button class="add-creature-btn" onclick="addCreature(this)">Add Creature 
       `;
-    for (j = 0; j < Creatures_size; j++) {
-      var crea_info = all_creature_info[j];
-      var crea_name = crea_info.creature_name;
-      var crea_id = crea_info.idCreature;
-      for (k = 0; k < Creatures_size; k++) {
-        var both_info = all_both_info[k];
-        var Location_idLocation = both_info.Location_idLocation;
-        var Creature_idCreature = both_info.Creature_idCreature;
-        if (crea_id == Creature_idCreature && Location_idLocation == idLocation ) {
-          tabmarkup = tabmarkup + 
-          `<a href="#">${crea_name}</a>`;
-          k = 100;
-        }
-      }
-    }
-    tabmarkup = tabmarkup +
-    `</div>
+          for (j = 0; j < Creatures_size; j++) {
+            var crea_info = all_creature_info[j];
+            var crea_name = crea_info.creature_name;
+            var crea_id = crea_info.idCreature;
+            for (k = 0; k < Creatures_size; k++) {
+              var both_info = all_both_info[k];
+              var Location_idLocation = both_info.Location_idLocation;
+              var Creature_idCreature = both_info.Creature_idCreature;
+              if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
+                tabmarkup = tabmarkup +
+                  `<a href="#">${crea_name}</a>`;
+                k = 100;
+              }
+            }
+          }
+          tabmarkup = tabmarkup +
+            `</div>
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
       </button>
         <div class="dropdown-container">`;
-    for (j = 0; j < Item_size; j++) {
-      var item_info = all_item_info[j];
-      var item_name = item_info.item_name;
-      var item_id = item_info.Location_idLocation;
-      if (item_id == idLocation) {
-        console.log("*********************");
-        tabmarkup = tabmarkup + 
-        `<a href="#">${item_name}</a>`;
-        j = 100;
+          for (j = 0; j < Item_size; j++) {
+            var item_info = all_item_info[j];
+            var item_name = item_info.item_name;
+            var item_id = item_info.Location_idLocation;
+            if (item_id == idLocation) {
+              console.log("*********************");
+              tabmarkup = tabmarkup +
+                `<a href="#">${item_name}</a>`;
+              j = 100;
+            }
+          }
+          tabmarkup = tabmarkup +
+            `</div>
+    </div>`;
+          new_location.innerHTML = tabmarkup;
+          var Locations = document.getElementById("Locations");
+          Locations.appendChild(new_location);
         }
       }
-      tabmarkup = tabmarkup + 
-      `</div>
-    </div>`;
-  new_location.innerHTML = tabmarkup;
-  var Locations = document.getElementById("Locations");
-  Locations.appendChild(new_location);
-  }
+    </script>
 
-}
-</script>
+    <!-- for adding creatures-->
+    <script>
+      function addCreature(el) {
+        newCreatureCard(el);
+      }
+    </script>
+    <script>
+      addCreatureCard('1');
+      addCreatureCard('2');
+      addCreatureCard('3');
 
-<!-- for adding creatures-->
-<script> 
-  function addCreature(element) {
-    $(element).appendChild()
-  }
-</script>
-<script>
+      $("input").change(function (e) { autoUpdateDB(e) });
+      $("textarea").change(function (e) { autoUpdateDB(e) });
 
-addCreatureCard('1');
-addCreatureCard('2');
-addCreatureCard('3');
+      function reloadListeners() {
+        $("input").change(function (e) { autoUpdateDB(e) });
+        $("textarea").change(function (e) { autoUpdateDB(e) });
+      }
 
-$("input").change(function(e){autoUpdateDB(e)});
-$("textarea").change(function(e){autoUpdateDB(e)});
-$("select").change(function(e){autoUpdateDB(e)});
 
-function reloadListeners()
-{
-	$("input").change(function(e){autoUpdateDB(e)});
-	$("textarea").change(function(e){autoUpdateDB(e)});
-}
+      function autoUpdateDB(e) {
+        var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
+        console.log($(e.target));
+        var ccidComponents = changedCardId.split('_');
+        var type = ccidComponents[0];
+        var id = ccidComponents[1];
+        var newValue = e.target.value;
+        var table = '';
+        if (type == "creature") {
+          table = "Creature";
+        }
+        else if (type == "attack") {
+          table = "Attack";
+        }
+        else if (type == "damage") {
+          table = "Damage";
+        }
+        column = e.target.id;
 
-function autoUpdateDB(e)
-{
-
-  console.log(e.target);
-
-  var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
-  var ccidComponents = changedCardId.split('_');
-  var type = ccidComponents[0];
-  var id = ccidComponents[1];
-
-  var newValue = e.target.value;
-
-  var table = '';
-
-  if(type == "creature")
-  {
-    table = "Creature";
-  }  
-  else if(type == "attack")
-  {
-    table = "Attack";
-  }  
-  else if(type == "damage")
-  {
-    table = "Damage";
-  }  
-
-  column = e.target.id;
-
-  queryDB(`UPDATE ${table} SET ${table}.${column} = `+ "\"" +`${newValue}` + "\"" +` WHERE id${table} = ${id};`);
-}
-
-function newCreatureCard()
-{
-  var newID = JSON.parse(queryDB('SELECT max(idCreature) from Creature'))[0]["max(idCreature)"] + 1;
-  queryDB(`INSERT INTO Creature (idCreature, creature_name) VALUES (${newID}, 'New Creature')`);
-  addCreatureCard(newID);
-}
-
-function addCreatureCard(cardid)
-{
-
-  var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature='+cardid+';'))[0];
-  var newcard = document.createElement('div');
-  newcard.id = "creature_" + cardid;
-  newcard.className="card entrycontainer";
-
-  cardmarkup = `
+        queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);
+      }
+      function newCard(element = null, type = "creature") {
+        type = type.toLowerCase();
+        var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
+        queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`);
+        if (element != null) {
+          $(element).parent().prepend(`<button id="${type}_${newID}" class="${type}-btn">New ${type}</button>`)
+        }
+        if(type.toLowerCase() == "creature") {
+          addCreatureCard(newID);
+        } else {
+          console.error("Unknown card type - failed to create card. Card type: "+type);
+        }
+      }
+      function newCreatureCard(element = null, type = "creature") {
+        console.warn("newCreatureCard is deprecated - please use newCard instead");
+        newCard(element,type);
+      }
+      function addCreatureCard(cardid) {
+        var creature = JSON.parse(queryDB('SELECT * FROM Creature WHERE idCreature=' + cardid + ';'))[0];
+        var newcard = document.createElement('div');
+        newcard.id = "creature_" + cardid;
+        newcard.className = "card entrycontainer";
+        cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
@@ -367,7 +360,6 @@ function addCreatureCard(cardid)
     </div>
   `;
         newcard.innerHTML = cardmarkup;
-  
         var desktop = document.getElementById("desktop");
         desktop.appendChild(newcard);
 
@@ -436,37 +428,37 @@ function addCreatureCard(cardid)
 			${dmgList}
 			</div>
 			`;
-		}
+          }
 
+        }
+        attackTable.insertRow().innerHTML = `*<button onclick=addAttackEntry(${cardid})>+</button>*/`;
+        dragElement(newcard);
+        reloadListeners();
+      }
+
+      function isJSON(s) {
+        if (/^[\],:{}\s]*$/.test(s.replace(/\\["\\\/bfnrtu]/g, '@').
+          replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+          replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
+          return true;
+        return false;
 	}
 	attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
 
+      function closeCard(id) {
+        var desktop = document.getElementById("desktop");
+        console.log(id);
+        console.log(desktop);
+        desktop.removeChild(document.getElementById(id));
       }
+      function addAttackEntry(creatureID) {
 
-function isJSON(s)
-{
-	if (/^[\],:{}\s]*$/.test(s.replace(/\\["\\\/bfnrtu]/g, '@').
-	replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-	replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
-		return true;
-	return false;
-}
+        var attackTable = document.getElementById(`${creatureID}_attacks`);
 
-function closeCard(id)
-{
-  var desktop = document.getElementById("desktop");
-  desktop.removeChild(document.getElementById(id));
-}
+        var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
+        queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, "new");`);
 
-function addAttackEntry(creatureID)
-{
-
-	var attackTable = document.getElementById(`${creatureID}_attacks`);
-
-	var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
-  	queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, "new");`);
-  	
-	queryDB(`INSERT INTO CreatureAttack (Attack_idAttack, Creature_idCreature) 
+        queryDB(`INSERT INTO CreatureAttack (Attack_idAttack, Creature_idCreature) 
 			VALUES (${newID}, ${creatureID});`);
 
 	var newRow = attackTable.insertRow();

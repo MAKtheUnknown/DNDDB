@@ -238,12 +238,22 @@ function Add_Location(Location)
 
 addCreatureCard('1');
 addCreatureCard('2');
+addCreatureCard('3');
 
 $("input").change(function(e){autoUpdateDB(e)});
 $("textarea").change(function(e){autoUpdateDB(e)});
 
+function reloadListeners()
+{
+	$("input").change(function(e){autoUpdateDB(e)});
+	$("textarea").change(function(e){autoUpdateDB(e)});
+}
+
 function autoUpdateDB(e)
 {
+
+  console.log(e.target);
+
   var changedCardId = $(e.target).closest(".entrycontainer")[0].id;
   var ccidComponents = changedCardId.split('_');
   var type = ccidComponents[0];
@@ -268,7 +278,7 @@ function autoUpdateDB(e)
 
   column = e.target.id;
 
-  queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "`" +`${newValue}` + "`" +` WHERE id${table} = ${id}`);
+  queryDB(`UPDATE ${table} SET ${table}.${column} = `+ "\"" +`${newValue}` + "\"" +` WHERE id${table} = ${id};`);
 }
 
 function newCreatureCard()
@@ -319,8 +329,9 @@ function addCreatureCard(cardid)
 
 	var attacks = null;
 	console.log(attackQuery);
-	if(attackQuery != null)
+	if(attackQuery != null && isJSON(attackQuery) && attackQuery != "undefined" && attackQuery != "")
 		attacks = JSON.parse(attackQuery);
+
 
 	var attackTable = document.getElementById(`${cardid}_attacks`);
 
@@ -335,33 +346,48 @@ function addCreatureCard(cardid)
 		var modifier = newRow.insertCell(1);		
 		var damage = newRow.insertCell(2);
 		var description = newRow.insertCell(3);
+		var rowX = newRow.insertCell(4);
 	
 		name.innerHTML = `<input id=attack_name type=text style="width:40%" value=${attack.attack_name}>`;
 		modifier.innerHTML = `<input id=attack_modifier type=number value=${attack.attack_modifier}>`; 
 		description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text>${attack.attack_description}</textarea>`;
 
-		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
-		var damages = JSON.parse(damageQuery);
+		rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${attack.idAttack}, ${cardid}, ${newRow.id})">X</button></div>`;
 
-		dmgList = ""
-		for (j in damages)
+		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
+		var damages = null;
+		if(damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "")
 		{
-			var d = damages[j];
-			dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
+			damages = JSON.parse(damageQuery);
+
+			dmgList = ""
+			for (j in damages)
+			{
+				var d = damages[j];
+				dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
 				<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}> ${d.damage_type}</p>`
+			}
+	
+			damage.innerHTML = `
+			<div>
+			${dmgList}
+			</div>
+			`;
 		}
 
-		damage.innerHTML = `
-		<div>
-		${dmgList}
-		</div>
-		`;
 	}
-	attackTable.insertRow().innerHTML = `*<button>+</button>*/`;
-
-	
+	attackTable.insertRow().innerHTML = `*<button onclick=addAttackEntry(${cardid})>+</button>*/`;
 
       }
+
+function isJSON(s)
+{
+	if (/^[\],:{}\s]*$/.test(s.replace(/\\["\\\/bfnrtu]/g, '@').
+	replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+	replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
+		return true;
+	return false;
+}
 
 function closeCard(id)
 {
@@ -371,11 +397,40 @@ function closeCard(id)
 
 function addAttackEntry(creatureID)
 {
+	var attackTable = document.getElementById(`${creatureID}_attacks`);
+
 	var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
-  	queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, '?')`);
+  	queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, "new");`);
   	
+	queryDB(`INSERT INTO CreatureAttack (Attack_idAttack, Creature_idCreature) 
+			VALUES (${newID}, ${creatureID});`);
+
+	var newRow = attackTable.insertRow();
+	newRow.className = 'entrycontainer';
+	newRow.id = 'attack_' + newID;
+
+	var name = newRow.insertCell(0);
+	var modifier = newRow.insertCell(1);		
+	var damage = newRow.insertCell(2);
+	var description = newRow.insertCell(3);
+	var rowX = newRow.insertCell(4);
+
+	name.innerHTML = `<input id=attack_name type=text style="width:40%">`;
+	modifier.innerHTML = `<input id=attack_modifier type=number>`; 
+	description.innerHTML = `<textarea id=attack_description style='background-color: rgba(0, 0, 0, 0.01)' type=text></textarea>`;
+	rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${newID}, ${creatureID}, ${newRow.id})">X</button></div>`;
+	reloadListeners();
 }
 
+function deleteAttack(attackID, creatureID, rowID)
+{
+	var row = document.getElementById('attack_'+attackID);
+	row.parentElement.removeChild(row);
+
+	queryDB(`DELETE FROM CreatureAttack WHERE Attack_idAttack=${attackID} AND Creature_idCreature=${creatureID};`);
+	queryDB(`DELETE FROM Attack WHERE idAttack=${attackID};`);
+
+}
 </script>
 
 

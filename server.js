@@ -5,6 +5,7 @@ const http = require('http');
 
 var server = http.createServer(function (req, res) {
     requestString = req.url.replace(/%20/g, ' ').slice(1);
+    requestString = requestString.replace(/%22/g, `"`);
     console.log("requestString: ", requestString);
     console.log("Request was made: " + req.url.replace('%20', ' ').slice(1) + ", " + req.method);
     if (requestString.toLowerCase().startsWith("update")) { //update an entity
@@ -22,14 +23,18 @@ var server = http.createServer(function (req, res) {
     } else if (requestString.toLowerCase().startsWith("select")) { //display data
         connection.query(requestString, function (error, results) {
             if (error) throw error;
-            if (results.length == 0) return null;
-            var returnString = results[0].solution;
-            console.log("Result: ", returnString);
+            console.log("Result: ", JSON.stringify(results));
             res.writeHead(200, { "Content-Type": 'text/plain' });
             res.end(JSON.stringify(results));
         });
 
-    } else if (req.url == "/site.html") {
+    } else if (requestString.toLowerCase().startsWith("delete")) {
+	connection.query(requestString, function (error) {
+            if (error) throw error;
+            res.writeHead(200, { "Content-Type": 'text/plain' });
+            res.end();
+        });
+} else if (req.url == "/site.html") {
         console.log("Site request");
         res.writeHead(200, { "Content-Type": 'text/html' });
         var myReadStream = fs.createReadStream('site.html', 'utf8');

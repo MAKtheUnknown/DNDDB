@@ -70,6 +70,13 @@ body {
   background-size: cover;
   background-attachment: fixed;
 }
+
+.btn-delete{
+  padding-right: 50px;
+  right: 100px;
+  margin-right: 50px;
+
+}
 /* On mouse-over */
 .sidenav a:hover, .dropdown-btn:hover, .creature-btn:hover, .add-creature-btn:hover {
   color: #f1f1f1; /* color of whole box when hovering over it */
@@ -238,13 +245,13 @@ select {
               var Creature_idCreature = both_info.Creature_idCreature;
               if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
                 tabmarkup = tabmarkup +
-                  `<a href="#">${crea_name}</a>`;
+                    `<button class="add-creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
                 k = 100;
               }
             }
           }
           tabmarkup = tabmarkup +
-            `<button class="add-creature-btn" onclick="addCreature(this)">Add Creature
+            `<button class="add-creature-btn" onclick="addCreature(this)">Add Creature</button>
             </div>
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
@@ -279,8 +286,6 @@ select {
     </script>
     <script>
       addCreatureCard('1');
-      addCreatureCard('2');
-      addCreatureCard('3');
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -344,6 +349,7 @@ select {
         newcard.className = "card entrycontainer";
         cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <button onclick=DeleteCard(${cardid})>Delete</button>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
     <p>Speed: <input id=speed type="number" value=${creature.speed}>
@@ -439,9 +445,17 @@ select {
           }
 
         }
-        attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
+        attackTable.createTFoot().innerHTML = `<div> <button onclick=addAttackEntry(${cardid})>Add</button>
+         </div>
+         `;
         dragElement(newcard);
         reloadListeners();
+      }
+
+      function DeleteCard(id){
+      console.log(id);
+      queryDB(`DELETE FROM creatureattack WHERE Creature_idCreature = ${id};`);
+
       }
 
       function isJSON(s) {

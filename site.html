@@ -315,10 +315,12 @@
 
           tabmarkup = tabmarkup +
             `</div>
-		<button class="dropdown-btn">Sublocations
+		<button id=sub_${idLocation} class="dropdown-btn">Sublocations
       <i class="fa fa-caret-down"></i>
       </button>
-	          <div id=${idLocation}_sublocations class="dropdown-container"></div>
+	          <div id=${idLocation}_sublocations class="dropdown-container"></div>`;
+	tabmarkup = tabmarkup + `
+            <button class="add-creature-btn" onclick="addLocation(sub_${idLocation}, ${idLocation})">Add Location</button>;
     </div>`;
 
           new_location.innerHTML = tabmarkup;
@@ -331,6 +333,10 @@
 			Locations.appendChild(new_location);
 		}
         }
+
+	var endaddloc = document.createElement('div'); 
+	endaddloc.innerHTML = `<button class="add-creature-btn" onclick="addLocation(this, null)">Add Location</button>`;
+	Locations.appendChild(endaddloc);
       }
     </script>
 
@@ -341,6 +347,9 @@
       }
       function addItem(el, loc) {
         newItemCard(el, loc);
+      }
+      function addLocation(el, loc) {
+        newLocationCard(el, loc);
       }
     </script>
     <script>
@@ -413,8 +422,12 @@
         dragElement(newcard);
       }
 
-      function addLocationCard(locationID) {
-        if (ctrlIsPressed) {
+      function addLocationCard(locationID){
+		addLocationCard(locationID, false);
+	}
+
+      function addLocationCard(locationID, openCard) {
+        if (ctrlIsPressed || openCard) {
           var locationQuery = queryDB('SELECT * FROM Location WHERE idLocation=' + locationID + ';');
           var location = JSON.parse(locationQuery)[0];
           var newcard = document.createElement('div');
@@ -464,7 +477,19 @@
 
 		if (element != null) {
           		$(element).parent().prepend(`<button id="item_${newID}-btn" class="creature-btn" onClick="addItemCard(${newID})">New Item</button>`)//todo
-        }
+        	}
+
+	}
+	
+	function newLocationCard(element, locationID)
+	{
+		var newID = JSON.parse(queryDB(`SELECT max(idLocation) from Location`))[0][`max(idLocation)`] + 1;
+		queryDB(`INSERT INTO Location (idLocation, location_name, superLocation_idLocation) VALUES (${newID}, 'New Location', ${locationID})`);
+		addLocationCard(newID, true);
+
+		if (element != null) {
+          		$(element).append(`<button id="location_${newID}-btn" class="creature-btn" onClick="addLocationCard(${newID})">New Location</button>`)//todo
+        	}
 
 	}
 

@@ -310,9 +310,8 @@
             }
           }
 	
-	tabmarkup = tabmarkup + `<button class="dropdown-btn">Creatures
-      <i class="fa fa-caret-down"></i>
-      </button>`;
+	tabmarkup = tabmarkup +
+            `<button class="add-creature-btn" onclick="addItem(this, ${idLocation})">Add Item</button>`;
 
           tabmarkup = tabmarkup +
             `</div>
@@ -335,10 +334,13 @@
       }
     </script>
 
-    <!-- for adding creatures-->
+    <!-- for adding -->
     <script>
       function addCreature(el) {
         newCreatureCard(el);
+      }
+      function addItem(el, loc) {
+        newItemCard(el, loc);
       }
     </script>
     <script>
@@ -386,7 +388,6 @@
 
         queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);
 
-        dragElement(newcard);
       }
 
 
@@ -455,6 +456,17 @@
 		
 	}
 
+	function newItemCard(element, locationID)
+	{
+		var newID = JSON.parse(queryDB(`SELECT max(idItem) from Item`))[0][`max(idItem)`] + 1;
+		queryDB(`INSERT INTO Item (idItem, item_name, Location_idLocation) VALUES (${newID}, 'New Item', ${locationID})`);
+		addItemCard(newID);
+
+		if (element != null) {
+          		$(element).parent().prepend(`<button id="item_${newID}-btn" class="creature-btn" onClick="addItemCard(${newID})">New Item</button>`)//todo
+        }
+
+	}
 
       function newCard(element = null, type = "creature") {
         var location_id;

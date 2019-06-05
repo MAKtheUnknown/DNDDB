@@ -174,6 +174,10 @@ input[type="text"] {
    background-color: rgba(0, 0, 0, 0.01)
 }
 
+select {
+   width: 60px;
+   background-color: rgba(0, 0, 0, 0.01)
+}
 
 </style>
 
@@ -283,6 +287,7 @@ addCreatureCard('3');
 
 $("input").change(function(e){autoUpdateDB(e)});
 $("textarea").change(function(e){autoUpdateDB(e)});
+$("select").change(function(e){autoUpdateDB(e)});
 
 function reloadListeners()
 {
@@ -406,7 +411,24 @@ function addCreatureCard(cardid)
 			{
 				var d = damages[j];
 				dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
-				<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}> ${d.damage_type}</p>`
+				<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}>
+				<select id=damage_type selected=${d.damage_type} class="btn btn-select resizeselect" value=${d.damage_type}>
+					<option value=${d.damage_type} selected disabled hidden>${d.damage_type}</option>
+					<option>acid</option>
+					<option>bludgeoning</option>
+					<option>cold</option>
+					<option>fire</option>
+					<option>force</option>
+					<option>lightning</option>
+					<option>necrotic</option>
+					<option>piercing</option>
+					<option>poison</option>
+					<option>psychic</option>
+					<option>radiant</option>
+					<option>slashing</option>
+					<option>thunder</option>
+				</select>
+				</p>`
 			}
 	
 			damage.innerHTML = `
@@ -417,7 +439,7 @@ function addCreatureCard(cardid)
 		}
 
 	}
-	attackTable.insertRow().innerHTML = `*<button onclick=addAttackEntry(${cardid})>+</button>*/`;
+	attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
 
       }
 
@@ -543,6 +565,42 @@ function dragElement(elmnt) {
     document.onmousemove = null;
   }
 }
+
+(function($, window){
+  var arrowWidth = 30;
+
+  $.fn.resizeselect = function(settings) {  
+    return this.each(function() { 
+
+      $(this).change(function(){
+        var $this = $(this);
+
+        // create test element
+        var text = $this.find("option:selected").text();
+        var $test = $("<span>").html(text).css({
+            "font-size": $this.css("font-size"), // ensures same size text
+            "visibility": "hidden"               // prevents FOUC
+        });
+
+
+        // add to parent, get width, and get out
+        $test.appendTo($this.parent());
+        var width = $test.width();
+        $test.remove();
+
+        // set select width
+        $this.width(width + arrowWidth);
+
+        // run on start
+      }).change();
+
+    });
+  };
+
+  // run by default
+  $("select.resizeselect").resizeselect();                       
+
+})(jQuery, window);
 
 </script>
 

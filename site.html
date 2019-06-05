@@ -127,7 +127,6 @@ body {
   border: 1px solid #d3d3d3;
   background-image: url("https://i.imgur.com/UoLHwVf.png");
   color:#4d1919;
-  width:100%;
   font-family: "Times New Roman", Times, serif;
 }
 
@@ -405,6 +404,9 @@ select {
 
 		rowX.innerHTML = `<div align=right class="x"><button type="button" onclick="deleteAttack(${attack.idAttack}, ${cardid}, ${newRow.id})">X</button></div>`;
 
+		var damageTable = document.createElement("table");
+		damageTable.id = "table_"+ cardid + "_" + attack.idAttack;
+
 		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${attack.idAttack};`);
 		var damages = null;
 		if(damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "")
@@ -415,9 +417,14 @@ select {
 			for (j in damages)
 			{
 				var d = damages[j];
-				dmgList = dmgList + `<p id=damage_${d.idDamage} class=entrycontainer>
-				<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}>
-				<select id=damage_type selected=${d.damage_type} class="btn btn-select resizeselect" value=${d.damage_type}>
+				var damageRow = damageTable.insertRow();
+				damageRow.className = "entrycontainer";
+				damageRow.id = `damage_${d.idDamage}`;
+				var rollCell = damageRow.insertCell(0);
+				var typeCell = damageRow.insertCell(1);
+				var delCell = damageRow.insertCell(2);
+				rollCell.innerHTML = `<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}>`;
+				typeCell.innerHTML = `<select id=damage_type selected=${d.damage_type} class="btn btn-select resizeselect" value=${d.damage_type}>
 					<option value=${d.damage_type} selected disabled hidden>${d.damage_type}</option>
 					<option>acid</option>
 					<option>bludgeoning</option>
@@ -432,17 +439,13 @@ select {
 					<option>radiant</option>
 					<option>slashing</option>
 					<option>thunder</option>
-				</select>
-				</p>`
+				</select>`;
+				delCell.innerHTML = `<div align=right class="x"><button type="button" onclick="removeDamage(${d.idDamage})">X</button></div>`;
 			}
-	
-			damage.innerHTML = `
 
-			<div>
-			${dmgList}
-			</div>
-			`;
-          }
+          	}
+		damageTable.createTFoot().innerHTML = `<button onclick="addDamage(${attack.idAttack}, ${cardid})">+</button>`;
+		damage.appendChild(damageTable);
 
         }
         attackTable.createTFoot().innerHTML = `<div> <button onclick=addAttackEntry(${cardid})>Add</button>
@@ -487,6 +490,7 @@ select {
 
         var attackTable = document.getElementById(`${creatureID}_attacks`);
 
+
         var newID = JSON.parse(queryDB('SELECT max(idAttack) from Attack'))[0]["max(idAttack)"] + 1;
         queryDB(`INSERT INTO Attack (idAttack, attack_name) VALUES (${newID}, "new");`);
 
@@ -502,6 +506,50 @@ select {
 	var damage = newRow.insertCell(2);
 	var description = newRow.insertCell(3);
 	var rowX = newRow.insertCell(4);
+
+	var damageTable = document.createElement("table");
+		damageTable.id = "table_"+ creatureID + "_" + newID;
+
+		var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${newID};`);
+		var damages = null;
+		if(damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "")
+		{
+			damages = JSON.parse(damageQuery);
+
+			dmgList = ""
+			for (j in damages)
+			{
+				var d = damages[j];
+				var damageRow = damageTable.insertRow();
+				damageRow.className = "entrycontainer";
+				damageRow.id = `damage_${d.idDamage}`;
+				var rollCell = damageRow.insertCell(0);
+				var typeCell = damageRow.insertCell(1);
+				var delCell = damageRow.insertCell(2);
+				rollCell.innerHTML = `<input id=damage_roll type=text class=dmgBox value=${d.damage_roll}>`;
+				typeCell.innerHTML = `<select id=damage_type selected=${d.damage_type} class="btn btn-select resizeselect" value=${d.damage_type}>
+					<option value=${d.damage_type} selected disabled hidden>${d.damage_type}</option>
+					<option>acid</option>
+					<option>bludgeoning</option>
+					<option>cold</option>
+					<option>fire</option>
+					<option>force</option>
+					<option>lightning</option>
+					<option>necrotic</option>
+					<option>piercing</option>
+					<option>poison</option>
+					<option>psychic</option>
+					<option>radiant</option>
+					<option>slashing</option>
+					<option>thunder</option>
+				</select>`;
+				delCell.innerHTML = `<div align=right class="x"><button type="button" onclick="removeDamage(${d.idDamage})">X</button></div>`;
+			}
+
+          	}
+		damageTable.createTFoot().innerHTML = `<button onclick="addDamage(${newID}, ${creatureID})">+</button>`;
+		damage.appendChild(damageTable);
+
 
 	name.innerHTML = `<input id=attack_name type=text style="width:40%">`;
 	modifier.innerHTML = `<input id=attack_modifier type=number>`; 
@@ -521,6 +569,52 @@ function deleteAttack(attackID, creatureID, rowID)
 
 }
 
+function addDamage(attackID, creatureID)
+{
+	var newID = JSON.parse(queryDB('SELECT max(idDamage) from Damage'))[0]["max(idDamage)"] + 1;
+	queryDB(`INSERT INTO Damage (idDamage, Attack_idAttack, damage_roll, damage_type) VALUES (${newID}, ${attackID}, "", "piercing")`);
+	
+	var dt = document.getElementById("table_"+ creatureID + "_" + attackID);
+
+	console.log(dt);
+
+	var newRow = dt.insertRow();
+	newRow.className = 'entrycontainer';
+	newRow.id = `damage_${newID}`
+
+	var newRoll = newRow.insertCell(0);
+	var newType = newRow.insertCell(1);
+	var delCell = newRow.insertCell(2);
+
+	newRoll.innerHTML = `<input id=damage_roll type=text class=dmgBox value="">`;
+	newType.innerHTML = `<select id=damage_type selected='piercing' class="btn btn-select resizeselect" value='piercing'>
+					<option value='piercing' selected disabled hidden>piercing</option>
+					<option>acid</option>
+					<option>bludgeoning</option>
+					<option>cold</option>
+					<option>fire</option>
+					<option>force</option>
+					<option>lightning</option>
+					<option>necrotic</option>
+					<option>piercing</option>
+					<option>poison</option>
+					<option>psychic</option>
+					<option>radiant</option>
+					<option>slashing</option>
+					<option>thunder</option>
+				</select>`;
+				delCell.innerHTML = `<div align=right class="x"><button type="button" onclick="removeDamage(${newID})">X</button></div>`;
+	reloadListeners();
+
+}
+
+function removeDamage(damageID)
+{
+	var row = document.getElementById('damage_'+damageID);
+	row.parentElement.removeChild(row);
+
+	queryDB(`DELETE FROM Damage WHERE idDamage=${damageID};`);
+}
 
 /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
 var dropdown = document.getElementsByClassName("dropdown-btn");

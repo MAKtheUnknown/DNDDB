@@ -252,7 +252,7 @@
           var idLocation = loc_info.idLocation;
           new_location.id = idLocation;
           tabmarkup = `
-    <button id=${idLocation} class="dropdown-btn">${loc_name}
+    <button id=${idLocation} class="dropdown-btn" onclick="addLocationCard(${idLocation})">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
@@ -314,7 +314,7 @@
     </script>
     <script>
       addCreatureCard('1');
-	addItemCard(1);
+	addLocationCard(7);
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -370,11 +370,32 @@
        		newcard.id = "item_" + itemID;
         	newcard.className = "card entrycontainer";
 
-		console.log("item: " + itemID);
 		cardmarkup = `
     		<div id="${newcard.id}header" class="grip"><input id=item_name style="font-size:25px" type="text" size="10" value="${item.item_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
     <button onclick=DeleteCard(${itemID})>Delete</button>
     <p><textarea class=description id=item_description type=text>${item.item_description}</textarea></p>
+    <div>
+    </div>
+  `;
+		newcard.innerHTML = cardmarkup;
+        	var desktop = document.getElementById("desktop");
+        	desktop.appendChild(newcard);
+		reloadListeners();
+		dragElement(newcard);
+	}
+
+      function addLocationCard(locationID)
+	{
+		var locationQuery = queryDB('SELECT * FROM Location WHERE idLocation=' + locationID + ';');
+		var location = JSON.parse(locationQuery)[0];
+        	var newcard = document.createElement('div');
+       		newcard.id = "location_" + locationID;
+        	newcard.className = "card entrycontainer";
+
+		cardmarkup = `
+    		<div id="${newcard.id}header" class="grip"><input id=location_name style="font-size:25px" type="text" size="10" value="${location.location_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <button onclick=DeleteCard(${locationID})>Delete</button>
+    <p><textarea class=description id=location_description type=text>${location.location_description}</textarea></p>
     <div>
     </div>
   `;

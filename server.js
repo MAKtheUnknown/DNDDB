@@ -5,9 +5,9 @@ const http = require('http');
 
 var server = http.createServer(function (req, res) {
     requestString = req.url.replace(/%20/g, ' ').slice(1);
-    requestString = requestString.replace(/%22/g, `"`);
+    requestString = requestString.replace(/%22/g, `"`).replace(/%60/g, "`");
     console.log("requestString: ", requestString);
-    console.log("Request was made: " + req.url.replace('%20', ' ').slice(1) + ", " + req.method);
+    console.log("Request was made: " + requestString);
     if (requestString.toLowerCase().startsWith("update")) { //update an entity
         connection.query(requestString, function (error) {
             if (error) throw error;

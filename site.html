@@ -253,7 +253,7 @@
           var idLocation = loc_info.idLocation;
           new_location.id = idLocation;
           tabmarkup = `
-    <button id=${idLocation} class="dropdown-btn">${loc_name}
+    <button id=${idLocation} class="dropdown-btn" onclick="addLocationCard(${idLocation})">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-container">
@@ -288,9 +288,10 @@
             var item_info = all_item_info[j];
             var item_name = item_info.item_name;
             var item_id = item_info.Location_idLocation;
+            var actual_item_id_not_whatever_this_crap_is = item_info.idItem;
             if (item_id == idLocation) {
               tabmarkup = tabmarkup +
-                `<a href="#">${item_name}</a>`;
+                `<button class="add-creature-btn" onclick="addItemCard(${actual_item_id_not_whatever_this_crap_is})">${item_name}</button>`;
               j = 100;
             }
           }
@@ -311,6 +312,8 @@
       }
     </script>
     <script>
+
+	addLocationCard(7);
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -348,10 +351,61 @@
         else if (type == "damage") {
           table = "Damage";
         }
+	else if (type == "item")
+	{
+	  table = "Item";
+	}
         column = e.target.id;
 
         queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);
       }
+
+
+      function addItemCard(itemID)
+	{
+		var itemQuery = queryDB('SELECT * FROM Item WHERE idItem=' + itemID + ';');
+		var item = JSON.parse(itemQuery)[0];
+        	var newcard = document.createElement('div');
+       		newcard.id = "item_" + itemID;
+        	newcard.className = "card entrycontainer";
+
+		cardmarkup = `
+    		<div id="${newcard.id}header" class="grip"><input id=item_name style="font-size:25px" type="text" size="10" value="${item.item_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <button onclick=DeleteCard(${itemID})>Delete</button>
+    <p><textarea class=description id=item_description type=text>${item.item_description}</textarea></p>
+    <div>
+    </div>
+  `;
+		newcard.innerHTML = cardmarkup;
+        	var desktop = document.getElementById("desktop");
+        	desktop.appendChild(newcard);
+		reloadListeners();
+		dragElement(newcard);
+	}
+
+      function addLocationCard(locationID)
+	{
+		var locationQuery = queryDB('SELECT * FROM Location WHERE idLocation=' + locationID + ';');
+		var location = JSON.parse(locationQuery)[0];
+        	var newcard = document.createElement('div');
+       		newcard.id = "location_" + locationID;
+        	newcard.className = "card entrycontainer";
+
+		cardmarkup = `
+    		<div id="${newcard.id}header" class="grip"><input id=location_name style="font-size:25px" type="text" size="10" value="${location.location_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <button onclick=DeleteCard(${locationID})>Delete</button>
+    <p><textarea class=description id=location_description type=text>${location.location_description}</textarea></p>
+    <div>
+    </div>
+  `;
+		newcard.innerHTML = cardmarkup;
+        	var desktop = document.getElementById("desktop");
+        	desktop.appendChild(newcard);
+		reloadListeners();
+		dragElement(newcard);
+	}
+
+
       function newCard(element = null, type = "creature") {
         var location_id;
         if (element != null) {

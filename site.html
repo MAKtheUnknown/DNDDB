@@ -158,7 +158,7 @@
     .card {
       display: table-cell;
       position: absolute;
-      width: 350px;
+      min-width: 350px;
       z-index: 9;
       background-color: #f1f1f1;
       text-align: left;
@@ -434,6 +434,9 @@
 		dragElement(newcard);
 
 
+
+	}
+
 		var subTab = document.getElementById(`${locationID}_sublocations`);
 		var sublocationsQuery = queryDB(`SELECT idLocation FROM Location WHERE superLocation_idLocation=${locationID}`);
 		var sublocations = JSON.parse(sublocationsQuery);
@@ -449,7 +452,6 @@
 				}
 			}
 		}
-	}
 		
 	}
 

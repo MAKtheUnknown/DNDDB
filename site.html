@@ -230,9 +230,13 @@
     <h2>DND</h2>
     <p>Manage your cards:</p>
 
-
+	
 
     <script>
+
+	var locationTabs = [];
+	var locationTabHTML = [];
+
       add_dropdown();
       function add_dropdown() {
         var tabmarkup;
@@ -256,11 +260,11 @@
     <button id=${idLocation} class="dropdown-btn" onclick="addLocationCard(${idLocation})">${loc_name}
     <i class="fa fa-caret-down"></i>
     </button>
-    <div class="dropdown-container">
+    <div id=${idLocation}blk class="dropdown-container">
       <button class="dropdown-btn">Creatures
       <i class="fa fa-caret-down"></i>
       </button>
-      <div class="dropdown-container"> 
+      <div class="dropdown-container "> 
       `;
           for (j = 0; j < Creatures_size; j++) {
             var crea_info = all_creature_info[j];
@@ -283,7 +287,7 @@
       <button class="dropdown-btn">Items
       <i class="fa fa-caret-down"></i>
       </button>
-        <div class="dropdown-container">`;
+        <div class="dropdown-container" >`;
           for (j = 0; j < Item_size; j++) {
             var item_info = all_item_info[j];
             var item_name = item_info.item_name;
@@ -295,12 +299,28 @@
               j = 100;
             }
           }
+	
+	tabmarkup = tabmarkup + `<button class="dropdown-btn">Creatures
+      <i class="fa fa-caret-down"></i>
+      </button>`;
+
           tabmarkup = tabmarkup +
             `</div>
+		<button class="dropdown-btn">Sublocations
+      <i class="fa fa-caret-down"></i>
+      </button>
+	          <div id=${idLocation}_sublocations class="dropdown-container"></div>
     </div>`;
+
           new_location.innerHTML = tabmarkup;
           var Locations = document.getElementById("Locations");
-          Locations.appendChild(new_location);
+
+	locationTabs.push(new_location);
+	locationTabHTML.push(tabmarkup);
+          //if(loc_info.superLocation_idLocation == null)
+		{
+			Locations.appendChild(new_location);
+		}
         }
       }
     </script>
@@ -312,8 +332,6 @@
       }
     </script>
     <script>
-
-	addLocationCard(7);
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -386,7 +404,7 @@
 	}
 
       function addLocationCard(locationID)
-	{
+	{		
 		var locationQuery = queryDB('SELECT * FROM Location WHERE idLocation=' + locationID + ';');
 		var location = JSON.parse(locationQuery)[0];
         	var newcard = document.createElement('div');
@@ -405,6 +423,24 @@
         	desktop.appendChild(newcard);
 		reloadListeners();
 		dragElement(newcard);
+
+
+		var subTab = document.getElementById(`${locationID}_sublocations`);
+		var sublocationsQuery = queryDB(`SELECT idLocation FROM Location WHERE superLocation_idLocation=${locationID}`);
+		var sublocations = JSON.parse(sublocationsQuery);
+		
+		for(i in sublocations)
+		{
+			for(j in locationTabs)
+			{
+				if(sublocations[i].idLocation == locationTabs[j].id)
+				{
+					subTab.appendChild(locationTabs[j]);
+					//var e = document.getElementById(`${locationTabs[j].id}blk`)
+				}
+			}
+		}
+		
 	}
 
 
@@ -414,14 +450,14 @@
           location_id = element.parentElement.parentElement.parentElement.id;
         }
         type = type.toLowerCase();
-        var newID = JSON.parse(queryDB(`SELECT max(id${type}) from ${type}`))[0][`max(id${type})`] + 1;
-        queryDB(`INSERT INTO ${type} (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`); //inserts entity into database
+        var newID = JSON.parse(queryDB(`SELECT max(id${type}) from Creature`))[0][`max(id${type})`] + 1;
+        queryDB(`INSERT INTO Creature (id${type}, ${type}_name) VALUES (${newID}, 'New ${type}')`); //inserts entity into database
         if (element != null) {
           $(element).parent().prepend(`<button id="${type}_${newID}-btn" class="${type}-btn" onClick="addCreatureCard(${newID})">New ${type}</button>`)//todo
         }
         if (type.toLowerCase() == "creature") {
           console.log("location_id: " + location_id);
-          queryDB("INSERT INTO `DND`.`creatureappearance` (`Location_idLocation`, `Creature_idCreature`, `appearance_specific_information`) VALUES (" + location_id + "," + newID + ",NULL);");
+          queryDB("INSERT INTO `DND`.`CreatureAppearance` (`Location_idLocation`, `Creature_idCreature`, `appearance_specific_information`) VALUES (" + location_id + "," + newID + ",NULL);");
           addCreatureCard(newID);
         } else {
           console.error("Unknown card type - failed to create card. Card type: " + type);
@@ -669,8 +705,6 @@
         queryDB(`INSERT INTO Damage (idDamage, Attack_idAttack, damage_roll, damage_type) VALUES (${newID}, ${attackID}, "", "piercing")`);
 
         var dt = document.getElementById("table_" + creatureID + "_" + attackID);
-
-        console.log(dt);
 
         var newRow = dt.insertRow();
         newRow.className = 'entrycontainer';

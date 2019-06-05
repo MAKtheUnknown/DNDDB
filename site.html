@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script>
@@ -22,7 +21,6 @@
       background-attachment: fixed;
       position: fixed;
     }
-
     .sidenav {
       height: 100%;
       width: 200px;
@@ -31,14 +29,12 @@
       top: 70px;
       left: 0px;
       overflow-x: hidden;
-      padding-top: 15px;
-      /* space between top side nave */
+  padding-top: 15px; /* space between top side nave */
       background-image: url("https://i.imgur.com/t3FGMcO.jpg");
       background-repeat: no-repeat;
       background-size: cover;
       background-attachment: fixed;
     }
-
     .logo {
       height: 100%;
       width: 200px;
@@ -53,15 +49,10 @@
       background-size: 200px, 200px;
       background-attachment: fixed;
       overflow-x: hidden;
-      padding-top: 50px;
-      /* space between top side nave */
+  padding-top: 50px; /* space between top side nave */
     }
-
     /* Style the sidenav links and the dropdown button */
-    .sidenav a,
-    .dropdown-btn,
-    .add-creature-btn,
-    .creature-btn {
+.sidenav a, .dropdown-btn, .add-creature-btn, .creature-btn {
       padding: 6px 8px 6px 16px;
       text-decoration: none;
       font-size: 20px;
@@ -80,46 +71,39 @@
       background-attachment: fixed;
     }
 
-    /* On mouse-over */
-    .sidenav a:hover,
-    .dropdown-btn:hover,
-    .creature-btn:hover,
-    .add-creature-btn:hover {
-      color: #f1f1f1;
-      /* color of whole box when hovering over it */
-    }
+.btn-delete{
+  padding-right: 50px;
+  right: 100px;
+  margin-right: 50px;
 
+}
+    /* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover, .creature-btn:hover, .add-creature-btn:hover {
+  color: #f1f1f1; /* color of whole box when hovering over it */
+    }
     /* Main content */
     .main {
-      margin-left: 200px;
-      /* Same as the width of the sidenav */
-      font-size: 20px;
-      /* Increased text to enable scrolling */
-      padding: 0px 0px;
-      /* left gives height and right value further shifts more pad */
+  margin-left: 200px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 0px;  /* left gives height and right value further shifts more pad */
       color: green;
     }
-
     /* Add an active class to the active dropdown button */
     .active {
       /*background-color: green;   background when selected */
-      color: white;
-      /* text when selected */
+  color: white;   /* text when selected */
     }
 
     /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
     .dropdown-container {
       display: none;
-      background-color: #262626;
-      /* drop down color */
-      padding-left: 14px;
-      /* shift leters to right  */
+  background-color: #262626; /* drop down color */
+  padding-left: 14px;    /* shift leters to right  */
       background-image: url("https://i.imgur.com/t3FGMcO.jpg");
       background-repeat: no-repeat;
       background-size: cover;
       background-attachment: fixed;
     }
-
     /* Optional: Style the caret down icon */
     .fa-caret-down {
       float: right;
@@ -130,13 +114,8 @@
 
     /* Some media queries for responsiveness */
     @media screen and (max-height: 450px) {
-      .sidenav {
-        padding-top: 15px;
-      }
-
-      .sidenav a {
-        font-size: 18px;
-      }
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
     }
 
     .card {
@@ -264,7 +243,7 @@
               var Creature_idCreature = both_info.Creature_idCreature;
               if (crea_id == Creature_idCreature && Location_idLocation == idLocation) {
                 tabmarkup = tabmarkup +
-                  `<a href="#">${crea_name}</a>`;
+                    `<button class="add-creature-btn" onclick="addCreatureCard(${crea_id})">${crea_name}</button>`;
                 k = 100;
               }
             }
@@ -305,8 +284,6 @@
     </script>
     <script>
       addCreatureCard('1');
-      addCreatureCard('2');
-      addCreatureCard('3');
 
       $("input").change(function (e) { autoUpdateDB(e) });
       $("textarea").change(function (e) { autoUpdateDB(e) });
@@ -374,6 +351,7 @@
         newcard.className = "card entrycontainer";
         cardmarkup = `
     <div id="${newcard.id}header" class="grip"><input id=creature_name style="font-size:25px" type="text" size="10" value="${creature.creature_name}">  <div align=right class="x"><button type="button" onclick="closeCard('${newcard.id}')">X</button></div> </div>
+    <button onclick=DeleteCard(${cardid})>Delete</button>
     <p>AC: <input id=ac type="number" size="1" value=${creature.ac}></p>
     <p>HP: <input id=hp type="number" value=${creature.hp}></p>
     <p>Speed: <input id=speed type="number" value=${creature.speed}>
@@ -470,9 +448,17 @@
                     damage.appendChild(damageTable);
 
         }
-        attackTable.createTFoot().innerHTML = `<button onclick=addAttackEntry(${cardid})>Add</button>`;
+        attackTable.createTFoot().innerHTML = `<div> <button onclick=addAttackEntry(${cardid})>Add</button>
+         </div>
+         `;
         dragElement(newcard);
         reloadListeners();
+      }
+
+      function DeleteCard(id){
+      console.log(id);
+      queryDB(`DELETE FROM creatureattack WHERE Creature_idCreature = ${id};`);
+
       }
 
       function isJSON(s) {
@@ -526,7 +512,8 @@
 
                 var damageQuery = queryDB(`SELECT * FROM Damage WHERE Attack_idAttack=${newID};`);
                 var damages = null;
-                if (damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "") {
+		if(damageQuery != null && isJSON(damageQuery) && damageQuery != "undefined" && damageQuery != "")
+		{
                     damages = JSON.parse(damageQuery);
 
                     dmgList = ""

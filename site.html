@@ -289,8 +289,6 @@
             var item_id = item_info.Location_idLocation;
             var actual_item_id_not_whatever_this_crap_is = item_info.idItem;
             if (item_id == idLocation) {
-              console.log("*********************");
-	      console.log(item_info);
               tabmarkup = tabmarkup +
                 `<button class="add-creature-btn" onclick="addItemCard(${actual_item_id_not_whatever_this_crap_is})">${item_name}</button>`;
               j = 100;
@@ -359,6 +357,8 @@
         column = e.target.id;
 
         queryDB(`UPDATE ${table} SET ${table}.${column} = ` + "\"" + `${newValue}` + "\"" + ` WHERE id${table} = ${id};`);
+
+	dragElement(newcard);
       }
 
 
